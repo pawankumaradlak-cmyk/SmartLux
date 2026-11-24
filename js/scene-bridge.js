@@ -56,12 +56,18 @@
         triggerVehicleDrive = function () {
             if (on3d && Scene3D.supported) {
                 const kind = lastType === 'pedestrian' ? 'cyclist' : lastType;
+                const isRev = (typeof isReverseTraffic !== 'undefined') && isReverseTraffic;
                 window.__lastVehicleId = Scene3D.launch(kind, {
-                    reverse: (typeof isReverseTraffic !== 'undefined') && isReverseTraffic,
-                    duration: (typeof isFastSpeed !== 'undefined' && isFastSpeed) ? 5 : 9
+                    reverse: isRev,
+                    duration: (typeof isFastSpeed !== 'undefined' && isFastSpeed) ? 5 : 8,
+                    x: isRev ? 115 : -115
                 });
             }
-            return _td.apply(this, arguments);
+            const res = _td.apply(this, arguments);
+            if (typeof ensureWaveTrackingLoop === 'function') {
+                ensureWaveTrackingLoop();
+            }
+            return res;
         };
     }
 
@@ -85,11 +91,17 @@
     if (typeof setAmbient === 'function' && state.ambient === 100) setAmbient(45, 'dusk');
     syncHost();
     // ambient traffic so the hero never looks empty
-    setTimeout(() => { if (on3d) Scene3D.launch('car', { duration: 11 }); }, 1200);
+    setTimeout(() => {
+        if (on3d) {
+            Scene3D.launch('car', { duration: 11 });
+            if (typeof ensureWaveTrackingLoop === 'function') ensureWaveTrackingLoop();
+        }
+    }, 1200);
     setInterval(() => {
         const a = document.querySelector('.page.active');
         if (!on3d || !a || a.id !== 'overview') return;
         const r = Math.random();
         Scene3D.launch(r > 0.8 ? 'truck' : 'car', { duration: 10 + Math.random() * 5, reverse: Math.random() > 0.5 });
+        if (typeof ensureWaveTrackingLoop === 'function') ensureWaveTrackingLoop();
     }, 5200);
 })();

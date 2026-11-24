@@ -612,8 +612,9 @@ function launch(type, opts = {}) {
     const z = -dir * lane;                // keep-left traffic
     const paint = model === 'truck' ? hex(0xf0f0f2) : (opts.paint || PAINTS[Math.floor(rnd() * PAINTS.length)]);
     const accent = PAINTS[2 + Math.floor(rnd() * 4)];
+    const startX = opts.x !== undefined ? opts.x : -dir * 215;
     const v = {
-        type: model, x: -dir * 215, z, dir, speed, dist: 0, parts: [], items: [], id: ++S.vid, model: M0, light: 0, paint,
+        type: model, x: startX, z, dir, speed, dist: 0, parts: [], items: [], id: ++S.vid, model: M0, light: 0, paint,
         spawned: S.time
     };
     for (const p of M0.parts) {

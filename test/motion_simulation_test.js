@@ -224,6 +224,7 @@ exec(`
     state.automatic = true;
     state.motionEnabled = true;
     state.waveEffectEnabled = true;
+    state.corridorWaveActive = false;
     updateLighting();
 
     // Mock Scene3D active vehicles on road (Vehicle 1 at Pole 1, Vehicle 2 at Pole 5)

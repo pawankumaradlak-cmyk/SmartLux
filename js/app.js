@@ -1135,51 +1135,49 @@ function updateWaveLighting() {
 
     if (all3dVehicles.length > 0) {
         all3dVehicles.forEach(v => {
-            // Check if vehicle is in corridor proximity (poles span 0 to 7)
-            const currPole = Math.round(v.pole);
-            if (currPole >= 0 && currPole < ROAD_POLES) {
-                if (v.dir > 0) {
-                    // Forward travel (Pole 0 -> 7): illuminate current pole and lookahead ahead
-                    for (let p = Math.max(0, currPole); p <= Math.min(ROAD_POLES - 1, currPole + lookahead); p++) {
-                        activePoles.add(p);
-                    }
-                } else {
-                    // Reverse travel (Pole 7 -> 0): illuminate current pole and lookahead ahead
-                    for (let p = Math.min(ROAD_POLES - 1, currPole); p >= Math.max(0, currPole - lookahead); p--) {
+            if (v.dir > 0) {
+                // Forward travel (Pole 0 -> 7): directional envelope from basePole to basePole + lookahead
+                if (v.pole >= -1.5 && v.pole <= (ROAD_POLES + 1.5)) {
+                    const basePole = Math.floor(v.pole + 0.2);
+                    const minPole = Math.max(0, basePole);
+                    const maxPole = Math.min(ROAD_POLES - 1, basePole + lookahead);
+                    for (let p = minPole; p <= maxPole; p++) {
                         activePoles.add(p);
                     }
                 }
-            } else if (v.pole >= -0.8 && v.pole < 0 && v.dir > 0) {
-                // Vehicle approaching Pole 0
-                for (let p = 0; p <= Math.min(ROAD_POLES - 1, lookahead); p++) {
-                    activePoles.add(p);
-                }
-            } else if (v.pole > (ROAD_POLES - 1) && v.pole <= (ROAD_POLES - 0.2) && v.dir < 0) {
-                // Vehicle approaching Pole 7 in reverse
-                for (let p = ROAD_POLES - 1; p >= Math.max(0, ROAD_POLES - 1 - lookahead); p--) {
-                    activePoles.add(p);
+            } else {
+                // Reverse travel (Pole 7 -> 0): directional envelope from basePole - lookahead to basePole
+                if (v.pole >= -1.5 && v.pole <= (ROAD_POLES + 1.5)) {
+                    const basePole = Math.ceil(v.pole - 0.2);
+                    const minPole = Math.max(0, basePole - lookahead);
+                    const maxPole = Math.min(ROAD_POLES - 1, basePole);
+                    for (let p = minPole; p <= maxPole; p++) {
+                        activePoles.add(p);
+                    }
                 }
             }
         });
-    }
-
-    // 2. Query 2D CSS Road Vehicle
-    if (vehicle2dStartTime > 0) {
+    } else if (vehicle2dStartTime > 0) {
+        // 2. Query 2D CSS Road Vehicle (active when 3D scene is not rendering vehicles)
         const elapsed = Date.now() - vehicle2dStartTime;
         const duration = isFastSpeed ? 2000 : 4000;
         if (elapsed < duration) {
             const progress = elapsed / duration;
-            const forwardIndex = Math.min(Math.floor(progress * ROAD_POLES), ROAD_POLES - 1);
-            const activeIndex = isReverseTraffic ? (ROAD_POLES - 1 - forwardIndex) : forwardIndex;
-            for (let i = 0; i < ROAD_POLES; i++) {
-                if (isReverseTraffic) {
-                    if (i <= (activeIndex + 0.5) && i >= (activeIndex - lookahead - 0.5)) {
-                        activePoles.add(i);
-                    }
-                } else {
-                    if (i >= (activeIndex - 0.5) && i <= (activeIndex + lookahead + 0.5)) {
-                        activePoles.add(i);
-                    }
+            const forwardIndex = progress * (ROAD_POLES - 1);
+            const activePos = isReverseTraffic ? (ROAD_POLES - 1 - forwardIndex) : forwardIndex;
+            if (isReverseTraffic) {
+                const basePole = Math.ceil(activePos - 0.2);
+                const minPole = Math.max(0, basePole - lookahead);
+                const maxPole = Math.min(ROAD_POLES - 1, basePole);
+                for (let i = minPole; i <= maxPole; i++) {
+                    activePoles.add(i);
+                }
+            } else {
+                const basePole = Math.floor(activePos + 0.2);
+                const minPole = Math.max(0, basePole);
+                const maxPole = Math.min(ROAD_POLES - 1, basePole + lookahead);
+                for (let i = minPole; i <= maxPole; i++) {
+                    activePoles.add(i);
                 }
             }
         }
@@ -1263,12 +1261,12 @@ function ensureWaveTrackingLoop() {
     waveTrackingTimer = setInterval(() => {
         updateWaveLighting();
 
-        const duration = isFastSpeed ? 2000 : 4000;
+        const duration = isFastSpeed ? 2500 : 5000;
         const has2dCar = (Date.now() - vehicle2dStartTime) < duration;
         const all3dVehicles = (typeof window !== "undefined" && window.Scene3D && window.Scene3D.supported && typeof window.Scene3D.vehicles === "function")
             ? window.Scene3D.vehicles()
             : [];
-        const has3dCar = all3dVehicles.some(v => v.pole >= -1.2 && v.pole <= (ROAD_POLES + 0.2));
+        const has3dCar = all3dVehicles.length > 0;
 
         if (!isContinuousTraffic && !has2dCar && !has3dCar && !state.corridorWaveActive) {
             clearInterval(waveTrackingTimer);
@@ -1296,9 +1294,17 @@ function triggerVehicleDrive() {
     ensureWaveTrackingLoop();
 }
 
+function checkNightForVehicle() {
+    if (state.ambient > state.threshold) {
+        setAmbient(25, "dusk");
+        toast("Switched to Dusk (25% Lux) to demonstrate motion-activated light wave");
+    }
+}
+
 // Button Events
 if ($("trafficButton")) {
     $("trafficButton").addEventListener("click", () => {
+        checkNightForVehicle();
         renderVehicle("car");
         triggerVehicleDrive();
         toast("Dispatched Electric Sedan onto smart road");
@@ -1307,6 +1313,7 @@ if ($("trafficButton")) {
 
 if ($("truckButton")) {
     $("truckButton").addEventListener("click", () => {
+        checkNightForVehicle();
         renderVehicle("truck");
         triggerVehicleDrive();
         toast("Dispatched Commercial Hauler onto smart road");
@@ -1315,6 +1322,7 @@ if ($("truckButton")) {
 
 if ($("pedestrianButton")) {
     $("pedestrianButton").addEventListener("click", () => {
+        checkNightForVehicle();
         renderVehicle("pedestrian");
         triggerVehicleDrive();
         toast("Dispatched Eco Cyclist onto smart road");
