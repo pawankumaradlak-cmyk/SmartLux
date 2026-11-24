@@ -1,0 +1,24 @@
+{
+  "name": "smartlux-automatic-street-light-controller",
+  "version": "1.4.0",
+  "description": "SmartLux - Automatic Street Light Controller with IoT Gateway Telemetry, LightNet v2.0 ML Traffic Prediction, APEO v2.0 Energy Optimization, Environmental Stress Testing Suite, and Cyber Defense IDS",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "node server/server.js",
+    "test": "node test/system_test.js && node test/motion_simulation_test.js && node -c js/app.js && node -c server/server.js"
+  },
+  "keywords": [
+    "smart-street-light",
+    "iot-gateway",
+    "esp32",
+    "machine-learning",
+    "traffic-prediction",
+    "energy-conservation",
+    "stress-testing",
+    "cyber-defense",
+    "ids"
+  ],
+  "author": "SmartLux Engineering Team",
+  "license": "MIT"
+}

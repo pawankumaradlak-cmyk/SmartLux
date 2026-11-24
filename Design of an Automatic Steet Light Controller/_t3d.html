@@ -1,0 +1,7 @@
+<!doctype html><html><body style="margin:0;background:#000"><div id="h" style="width:1280px;height:720px;position:relative"></div>
+<script src="/js/gl3d.js"></script><script src="/js/scene3d.js"></script>
+<script>
+window.addEventListener('error',e=>console.error('ERR '+e.message+' '+e.filename+':'+e.lineno));
+const ok=Scene3D.attach(document.getElementById('h'),'street');
+console.log('attach',ok,Scene3D.error||'');
+</script></body></html>

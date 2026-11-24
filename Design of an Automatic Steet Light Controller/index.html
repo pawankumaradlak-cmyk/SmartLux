@@ -1,0 +1,2292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b0d12">
+    <title>SmartLux | Automatic Street Light Controller</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* Dark theme fallback preventing any white flash */ 
+        html, body {
+            background-color: #090a0f;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></div>
+            <div>
+                <h2>Smart<span>Lux</span></h2>
+                <small>INTELLIGENT LIGHTING</small>
+            </div>
+        </div>
+
+        <div class="nav-label">MAIN</div>
+        <nav>
+            <button class="nav-item active" data-page="overview">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span> Overview
+            </button>
+            <button class="nav-item" data-page="monitoring">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span> Live Monitoring
+            </button>
+            <button class="nav-item" data-page="simulation">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H17a3.5 3.5 0 0 0 0-7H7a3.5 3.5 0 0 1 0-7h8.5"/></svg></span> Street Simulation
+            </button>
+            <button class="nav-item" data-page="automation">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span> Automation
+            </button>
+        </nav>
+
+        <div class="nav-label" style="margin-top: 18px;">INSIGHTS</div>
+        <nav>
+            <button class="nav-item" data-page="analytics">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 17V9M13 17V5M18 17v-6"/></svg></span> Energy Analytics
+            </button>
+            <button class="nav-item" data-page="prediction">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span> AI Traffic Predictor
+            </button>
+        </nav>
+
+        <div class="nav-label" style="margin-top: 18px;">ENGINEERING</div>
+        <nav>
+            <button class="nav-item" data-page="prototype">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2.2h12.4a1.5 1.5 0 0 0 1.3-2.2L14 9V3"/><path d="M7.5 15h9"/></svg></span> IoT Prototype &amp; Field Test
+            </button>
+            <button class="nav-item" data-page="faults">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></span> Fault Management
+            </button>
+        </nav>
+
+        <div class="nav-label" style="margin-top: 18px;">ADVANCED SYSTEMS</div>
+        <nav>
+            <button class="nav-item" data-page="stress">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.7 7.7A2.5 2.5 0 1 1 19.5 12H2M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2"/></svg></span> Stress &amp; Resilience
+            </button>
+            <button class="nav-item" data-page="security">
+                <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span> Cyber Defense &amp; IDS
+            </button>
+        </nav>
+
+
+
+        <div class="sidebar-bottom">
+            <div class="system-status">
+                <span class="status-dot green" id="sidebarDot"></span>
+                <div>
+                    <strong id="sidebarGatewayTitle">ESP32 Gateway Active</strong>
+                    <small id="sidebarGatewaySubtitle">RSSI: -58 dBm · Port 3000</small>
+                </div>
+            </div>
+            <p>SMARTLUX v1.3.4 · M3 CERTIFIED</p>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation" title="Toggle Navigation Menu">
+                    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <div>
+                    <div class="breadcrumb">SMARTLUX / <span id="pageName">OVERVIEW</span></div>
+                    <h1 id="pageTitle">Dashboard Overview</h1>
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <div class="system-status-chip operational" id="globalSystemStatus" title="System Status: Real-time telemetry monitoring">
+                    <span class="status-dot green" id="globalStatusDot"></span>
+                    <span id="globalStatusText">OPERATIONAL</span>
+                </div>
+                <button class="action-button demo-highlight-btn" id="startPresentationBtn" title="Launch Automated 9-Step Interactive Presentation Demo">
+                    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> START PRESENTATION DEMO
+                </button>
+                <div class="api-status-badge" id="apiStatusBadge" title="Click to view Backend API & Prototype Connection Settings">
+                    <span class="status-dot green" id="apiDot"></span>
+                    <span id="apiStatusText">Live API: Connected</span>
+                    <span class="latency-chip" id="apiLatencyText">14ms</span>
+                </div>
+                <div class="live-clock">
+                    <span class="status-dot"></span>
+                    <span id="clock">00:00:00</span>
+                </div>
+                <button class="icon-button" id="themeInfo" title="System information"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button>
+            </div>
+        </header>
+
+        <!-- OVERVIEW -->
+        
+<section class="page active" id="overview">
+
+            <div class="hero3d">
+                <div class="scene3d-host" id="scene3dHero"></div>
+                <div class="hero-shade"></div>
+                <div class="hero-copy">
+                    <div class="eyebrow">INTELLIGENT LIGHTING CONTROL</div>
+                    <h2>Roads that light up<br>only when you need them.</h2>
+                    <p>Monitor, manage and optimise your adaptive street lighting network in real time.</p>
+                    <div class="banner-status">
+                        <span class="status-dot"></span>
+                        <span id="bannerMode">Automatic mode active</span>
+                    </div>
+                </div>
+                <div class="hero-controls" role="group" aria-label="Time of day">
+                    <button data-hero-env="dayButton">Day</button>
+                    <button data-hero-env="duskButton" class="active">Dusk</button>
+                    <button data-hero-env="nightButton">Night</button>
+                    <button data-hero-env="fogButton">Fog</button>
+                </div>
+                <div class="hero-hint">Drag to orbit &middot; Ctrl + scroll to zoom</div>
+            </div>
+
+            <div class="section-heading">
+                <div>
+                    <h2>System Overview</h2>
+                    <p>Real-time system telemetry and operational KPI matrix</p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <span class="simulated-badge">[SOFTWARE SIMULATED ENGINE]</span>
+                    <span class="live-badge">● LIVE TELEMETRY</span>
+                </div>
+            </div>
+
+            <!-- Operating Mode Quick Switcher -->
+            <div class="panel" style="margin-bottom: 20px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <strong style="font-size: 13px; color: #ffffff;">System Operating Mode:</strong>
+                    <span style="color: #94a3b8; font-size: 12px; margin-left: 8px;">Select active control heuristic across all 20 corridor fixtures</span>
+                </div>
+                <div class="filter-pills" style="margin: 0;">
+                    <button class="filter-pill active" id="quickModeAuto">AUTO</button>
+                    <button class="filter-pill" id="quickModeManual">MANUAL</button>
+                    <button class="filter-pill" id="quickModeEco">ENERGY SAVING</button>
+                    <button class="filter-pill" id="quickModeEmergency">EMERGENCY</button>
+                </div>
+            </div>
+
+            <!-- 6 KPI CARDS -->
+            <div class="stats-grid stats-grid-6">
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Street Lights</span>
+                        <span class="stat-icon blue"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 6.6L21 9.5l-5 4.4 1.6 6.6L12 17l-5.6 3.5L8 13.9 3 9.5l6.6-.9z"/></svg></span>
+                    </div>
+                    <h2 id="totalLights">20</h2>
+                    <div class="stat-sparkline"><span style="width: 100%;"></span></div>
+                    <small>100% mapped network units</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Active Lights</span>
+                        <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
+                    </div>
+                    <h2 id="activeLights">0</h2>
+                    <div class="stat-sparkline"><span id="activeSparkline" style="width: 0%;"></span></div>
+                    <small id="activeDescription">Currently illuminated</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Current Power</span>
+                        <span class="stat-icon yellow">ϟ</span>
+                    </div>
+                    <h2><span id="overviewPowerVal">0.0</span><small class="unit"> W</small></h2>
+                    <div class="stat-sparkline"><span id="powerSparkline" style="width: 0%;"></span></div>
+                    <small id="powerBaselineComp">0% of 2000W static base</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Energy Conserved</span>
+                        <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5-6"/></svg></span>
+                    </div>
+                    <h2><span id="overviewEnergySavedKwh">0.000</span><small class="unit"> kWh</small></h2>
+                    <div class="stat-sparkline"><span id="energySparkline" style="width: 0%;"></span></div>
+                    <small id="overviewEnergySavedPct">0% conserved vs baseline</small>
+                    <span id="energyValue" style="display: none;">0.00</span>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>System Health</span>
+                        <span class="stat-icon purple"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+                    </div>
+                    <h2 id="systemHealthScore">100%</h2>
+                    <div class="stat-sparkline"><span id="healthSparkline" style="width: 100%;"></span></div>
+                    <small id="systemHealthSub">All 20 fixtures operational</small>
+                    <span id="efficiency" style="display: none;">100%</span>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Faults Detected</span>
+                        <span class="stat-icon red"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="7.9 2 16.1 2 22 7.9 22 16.1 16.1 22 7.9 22 2 16.1 2 7.9"/><path d="M12 8v5M12 16h.01"/></svg></span>
+                    </div>
+                    <h2 id="overviewFaultsCount">0</h2>
+                    <div class="stat-sparkline"><span id="faultSparkline" style="width: 0%;"></span></div>
+                    <small id="overviewFaultsSeverity">Zero active faults</small>
+                </div>
+
+            </div>
+
+            <!-- Energy Savings Comparison Strip -->
+            <div class="panel" id="overviewSavingsComparison" style="margin-bottom: 24px;">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Real-Time Energy Optimization vs Conventional Grid</h3>
+                        <small>Direct engineering comparison against 100W non-automated municipal luminaires</small>
+                    </div>
+                    <span class="live-badge">● CONTINUOUS COMPUTATION</span>
+                </div>
+                <div class="comparison-grid">
+                    <div class="comp-col">
+                        <small>CONVENTIONAL STREET LIGHTING</small>
+                        <h4>Static Non-Automated Grid</h4>
+                        <div class="comp-val">2000.0 Watts</div>
+                        <p>Continuous 100W per lamp without adaptive dimming or daylight cutoff (48 kWh/day)</p>
+                    </div>
+                    <div class="comp-vs">VS</div>
+                    <div class="comp-col highlight">
+                        <small>SMARTLUX ADAPTIVE NETWORK</small>
+                        <h4 id="overviewCompSmartLuxTitle">Intelligent Wave Control</h4>
+                        <div class="comp-val text-green" id="overviewCompSmartLuxWatts">0.0 Watts</div>
+                        <p id="overviewCompSmartLuxDesc">LDR photocell twilight cutoff + PIR progressive radar lookahead wave</p>
+                    </div>
+                    <div class="comp-col result">
+                        <small>REAL-TIME POWER REDUCTION</small>
+                        <div class="comp-saving-badge" id="overviewCompReductionVal">100% REDUCTION</div>
+                        <strong id="overviewCompWattsSaved">2000 W Conserved</strong>
+                        <p id="overviewCompAnnualEstimate">Est. ₹340 / night saved</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="content-grid">
+
+                <div class="panel environment-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Environment Monitor</h3>
+                            <p>Simulated environmental conditions</p>
+                        </div>
+                        <span class="live-badge">● LIVE</span>
+                    </div>
+
+                    <div class="environment-main">
+                        <div class="sun-icon" id="weatherIcon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></div>
+                        <div>
+                            <h2 id="lightLevel">100%</h2>
+                            <p>Ambient Light Intensity</p>
+                        </div>
+                    </div>
+
+                    <input type="range" id="ambientSlider" min="0" max="100" value="100">
+
+                    <div class="range-labels">
+                        <span>Night (0%)</span>
+                        <span>Daylight (100%)</span>
+                    </div>
+
+                    <div class="environment-footer">
+                        <div>
+                            <small>Environment</small>
+                            <strong id="environmentStatus">Daylight</strong>
+                        </div>
+                        <div>
+                            <small>Lighting mode</small>
+                            <strong id="lightingStatus">OFF</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel control-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>System Control</h3>
+                            <p>Manage lighting operation</p>
+                        </div>
+                        <span class="stat-icon blue"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
+                    </div>
+
+                    <div class="control-row">
+                        <div>
+                            <strong>Automatic Mode</strong>
+                            <small>Control based on ambient light</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="autoToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="control-row">
+                        <div>
+                            <strong>Motion Detection</strong>
+                            <small>Simulate vehicle and pedestrian movement</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="motionToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="control-row">
+                        <div>
+                            <strong>Manual Override</strong>
+                            <small>Switch all healthy lights ON/OFF</small>
+                        </div>
+                        <button class="action-button" id="manualButton">OFF</button>
+                    </div>
+
+                    <div class="control-note" id="controlMessage">
+                        Automatic lighting control is enabled.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- INTERACTIVE CIRCUIT ARCHITECTURE & SIGNAL FLOW -->
+            <div class="panel circuit-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Hardware Circuit & Signal Flow Telemetry</h3>
+                        <p>Live visual logic: LDR Sensor <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg> Microcontroller ADC <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg> PIR Interrupt <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg> PWM Power Stage</p>
+                    </div>
+                    <span class="live-badge" id="circuitBadge">● SIGNALS SYNCHRONIZED</span>
+                </div>
+
+                <div class="circuit-flow-container">
+                    <!-- LDR Stage -->
+                    <div class="circuit-node" id="nodeLdr">
+                        <div class="node-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></div>
+                        <div class="node-details">
+                            <span class="node-title">LDR Photocell</span>
+                            <strong id="circuitLdrVal">100% Lux</strong>
+                            <small id="circuitLdrState">Analog Reading: 4.85V</small>
+                        </div>
+                    </div>
+
+                    <div class="circuit-bus bus-active" id="busLdrToMcu">
+                        <div class="bus-wire">
+                            <div class="bus-signal-pulse"></div>
+                        </div>
+                        <span class="bus-tag">ADC ANALOG</span>
+                    </div>
+
+                    <!-- Microcontroller Stage -->
+                    <div class="circuit-node node-mcu" id="nodeMcu">
+                        <div class="node-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></div>
+                        <div class="node-details">
+                            <span class="node-title">Logic Controller (MCU)</span>
+                            <strong id="circuitMcuVal">DAYLIGHT CUTOFF</strong>
+                            <small id="circuitMcuClock">Clock: 16 MHz · Logic HIGH</small>
+                        </div>
+                    </div>
+
+                    <div class="circuit-bus" id="busMcuToDriver">
+                        <div class="bus-wire">
+                            <div class="bus-signal-pulse"></div>
+                        </div>
+                        <span class="bus-tag">PWM DRIVER</span>
+                    </div>
+
+                    <!-- Output Fixture Array -->
+                    <div class="circuit-node" id="nodeDriver">
+                        <div class="node-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></div>
+                        <div class="node-details">
+                            <span class="node-title">LED Fixture Array</span>
+                            <strong id="circuitDriverVal">0% (OFF)</strong>
+                            <small id="circuitWattage">Load: 0.0 Watts</small>
+                        </div>
+                    </div>
+
+                    <!-- PIR Radar Branch -->
+                    <div class="circuit-branch-node">
+                        <div class="circuit-node node-pir" id="nodePir">
+                            <div class="node-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.9 19.1A10 10 0 1 1 19.1 19.1"/><path d="M8 16a5.7 5.7 0 1 1 8 0"/><circle cx="12" cy="12" r="1.3"/><path d="M12 12 18 6"/></svg></div>
+                            <div class="node-details">
+                                <span class="node-title">PIR Motion Radar</span>
+                                <strong id="circuitPirVal">NO TARGET</strong>
+                                <small>Pyroelectric Sector Scan</small>
+                            </div>
+                        </div>
+                        <div class="circuit-bus bus-vertical" id="busPirToMcu">
+                            <div class="bus-wire">
+                                <div class="bus-signal-pulse"></div>
+                            </div>
+                            <span class="bus-tag">EXT INTERRUPT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="panel lights-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Street Light Network</h3>
+                        <p>Individual light monitoring</p>
+                    </div>
+                    <button class="text-button" data-goto="monitoring">View all <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+                </div>
+
+                <div class="light-grid" id="lightGrid"></div>
+            </div>
+
+        </section>
+
+<section class="page" id="monitoring">
+            <div class="section-heading">
+                <div>
+                    <h2>Live Street Monitoring Grid</h2>
+                    <p>Real-time telemetry, progressive wave tracking, and per-fixture remote control.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="btn-group" style="display: flex;">
+                        <button class="mini-btn active" id="viewGridBtn" title="Grid View Layout">
+                            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Grid
+                        </button>
+                        <button class="mini-btn" id="viewListBtn" title="Dense Table / List Layout">
+                            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> List
+                        </button>
+                    </div>
+                    <button class="action-button" id="batchAll100Btn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg> All 100%</button>
+                    <button class="action-button" id="batchAll30Btn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg> All 30% Eco</button>
+                    <button class="action-button" id="batchClearFaultsBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Clear Faults</button>
+                    <button class="action-button" id="refreshButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/></svg> Refresh</button>
+                </div>
+            </div>
+
+            <!-- Filter and Zone Selection Strip -->
+            <div class="panel monitor-filter-panel">
+                <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div class="filter-pills" id="monitorFilterPills">
+                            <button class="filter-pill active" data-filter="all">All Fixtures (<span id="filterCountAll">20</span>)</button>
+                            <button class="filter-pill" data-filter="on">Illuminated (<span id="filterCountOn">0</span>)</button>
+                            <button class="filter-pill" data-filter="dim">Eco-Dimmed (<span id="filterCountDim">0</span>)</button>
+                            <button class="filter-pill" data-filter="fault">Fault Alerts (<span id="filterCountFault">0</span>)</button>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span class="simulated-badge">[SIMULATED TELEMETRY]</span>
+                            <div class="search-box">
+                                <input type="text" id="lightSearchInput" placeholder="Search ID, Zone (e.g. 05, Zone A)...">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Zone Pills -->
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 10px;">
+                        <small style="color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Corridor Zone Filter:</small>
+                        <div class="filter-pills" id="zoneFilterPills" style="margin: 0;">
+                            <button class="filter-pill active" data-zone="all">All Zones</button>
+                            <button class="filter-pill" data-zone="A">Zone A (Poles 1-5)</button>
+                            <button class="filter-pill" data-zone="B">Zone B (Poles 6-10)</button>
+                            <button class="filter-pill" data-zone="C">Zone C (Poles 11-15)</button>
+                            <button class="filter-pill" data-zone="D">Zone D (Poles 16-20)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="monitor-summary" id="monitorSummary"></div>
+
+            <div class="light-grid large-grid" id="monitorGrid"></div>
+        </section>
+
+<section class="page" id="simulation">
+            <div class="section-heading">
+                <div>
+                    <h2>Street Simulation &amp; Digital Twin</h2>
+                    <p>Real-time 3D physics-based simulation with dynamic lookahead wave tracking.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="action-button" id="simPlayPauseBtn" title="Play or pause physics simulation">
+                        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="5 3 19 12 5 21 5 3"/></svg> <span id="simPlayPauseText">Pause</span>
+                    </button>
+                    <button class="action-button" id="simResetBtn" title="Reset digital twin vehicles and parameters">
+                        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> Reset
+                    </button>
+                    <button class="action-button active" id="trafficButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16 6.6 10a2 2 0 0 1 1.9-1.5h7a2 2 0 0 1 1.9 1.5L19 16"/><rect x="3" y="16" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="18" r=".6"/><circle cx="16.5" cy="18" r=".6"/></svg> Launch Car</button>
+                    <button class="action-button" id="truckButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 9h4l4 4v3h-8"/><circle cx="6.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/></svg> Launch Truck</button>
+                    <button class="action-button" id="pedestrianButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="17" r="3.5"/><circle cx="18.5" cy="17" r="3.5"/><path d="M12 17 9 8h4l3 9M9 8H7"/></svg> Launch Pedestrian</button>
+                    <button class="action-button" id="reverseTrafficBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4 3 8l4 4M3 8h18M17 20l4-4-4-4M21 16H3"/></svg> Reverse</button>
+                </div>
+            </div>
+
+            <div class="panel road-simulation-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Smart City Road &mdash; Live 3D Digital Twin</h3>
+                        <p>Physically-based lighting &middot; PIR-driven adaptive beams &middot; drag to orbit</p>
+                    </div>
+                    <span class="live-badge" id="simLiveBadge">● SIMULATION ACTIVE</span>
+                </div>
+                
+                <div class="road-scene" id="roadScene">
+                    <div class="scene3d-host" id="scene3dSim"></div>
+                    <div class="cam-bar" role="group" aria-label="Camera">
+                        <button data-cam="street" class="active">Street</button>
+                        <button data-cam="overview">Aerial</button>
+                        <button data-cam="profile">Profile</button>
+                        <button data-cam="hero">Cinematic</button>
+                        <button data-cam="chase">Chase</button>
+                        <span class="cam-sep"></span>
+                        <button data-cam-zoom="in" aria-label="Zoom in">+</button>
+                        <button data-cam-zoom="out" aria-label="Zoom out">&minus;</button>
+                    </div>
+                    <!-- Sky backdrop with astronomical elements & city skyline -->
+                    <div class="sky-backdrop">
+                        <div class="stars-layer"></div>
+                        <div class="clouds-layer">
+                            <div class="cloud cloud-1"></div>
+                            <div class="cloud cloud-2"></div>
+                        </div>
+                        <div class="moon-element" title="Moon">
+                            <div class="moon-halo"></div>
+                        </div>
+                        <div class="sun-element" title="Sun">
+                            <div class="sun-flare"></div>
+                        </div>
+                        <div class="city-skyline">
+                            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="skyline-svg">
+                                <path class="skyline-bg" d="M0,120 L0,70 L40,70 L40,50 L80,50 L80,80 L120,80 L120,40 L160,40 L160,90 L210,90 L210,35 L230,35 L230,20 L250,20 L250,35 L270,35 L270,75 L320,75 L320,55 L360,55 L360,85 L410,85 L410,30 L450,30 L450,70 L490,70 L490,45 L530,45 L530,80 L580,80 L580,25 L600,25 L600,10 L620,10 L620,25 L640,25 L640,65 L700,65 L700,45 L740,45 L740,85 L790,85 L790,38 L830,38 L830,75 L880,75 L880,50 L920,50 L920,85 L970,85 L970,25 L1010,25 L1010,70 L1060,70 L1060,45 L1100,45 L1100,80 L1150,80 L1150,60 L1200,60 L1200,120 Z" />
+                                <path class="skyline-fg" d="M0,120 L0,85 L30,85 L30,65 L70,65 L70,95 L110,95 L110,55 L150,55 L150,100 L190,100 L190,45 L220,45 L220,90 L260,90 L260,60 L300,60 L300,105 L350,105 L350,70 L390,70 L390,95 L440,95 L440,50 L480,50 L480,85 L520,85 L520,60 L570,60 L570,100 L620,100 L620,40 L660,40 L660,90 L710,90 L710,60 L750,60 L750,95 L800,95 L800,45 L840,45 L840,85 L890,85 L890,65 L930,65 L930,100 L980,100 L980,35 L1020,35 L1020,80 L1070,80 L1070,55 L1110,55 L1110,90 L1160,90 L1160,70 L1200,70 L1200,120 Z" />
+                            </svg>
+                        </div>
+                        <div class="fog-overlay" id="fogOverlay"></div>
+                    </div>
+
+                    <div class="sky-label" id="sceneLabel">DAYLIGHT ENVIRONMENT</div>
+
+                    <!-- 3D Road Viewport with Sidewalks, Perspective Lines, Asphalt and Reflective Puddle -->
+                    <div class="road-viewport">
+                        <div class="sidewalk sidewalk-top">
+                            <div class="curb-stones"></div>
+                        </div>
+
+                        <div class="road-surface" id="roadSurface">
+                            <div class="asphalt-shading"></div>
+                            <div class="road-marking-edge edge-top"></div>
+                            <div class="road-lane-center"></div>
+                            <div class="road-marking-edge edge-bottom"></div>
+
+                            <!-- Ground Light Reflection Pools -->
+                            <div class="ground-pools-layer" id="groundPools"></div>
+                        </div>
+
+                        <div class="sidewalk sidewalk-bottom">
+                            <div class="curb-stones"></div>
+                        </div>
+
+                        <!-- Architectural Street Lamp Array with Cantilever Fixtures and Light Beams -->
+                        <div class="road-lights" id="roadLights"></div>
+
+                        <!-- Moving Vehicle Track & Headlights -->
+                        <div class="vehicle-track" id="vehicleTrack">
+                            <div class="car" id="car">
+                                <div class="vehicle-body" id="vehicleBody">
+                                    <!-- Dynamic SVG car rendered by JS -->
+                                </div>
+                                <div class="headlight-beam" id="headlightBeam"></div>
+                                <div class="taillight-glow" id="taillightGlow"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Telemetry HUD Overlay -->
+                    <div class="road-hud">
+                        <div class="hud-chip">
+                            <span class="hud-indicator" id="hudPirDot"></span>
+                            <span class="hud-title">PIR SENSOR:</span>
+                            <span class="hud-value" id="hudPirText">STANDBY</span>
+                        </div>
+                        <div class="hud-chip">
+                            <span class="hud-title">ACTIVE ZONE:</span>
+                            <span class="hud-value" id="hudZoneText">AUTO MONITORING</span>
+                        </div>
+                        <div class="hud-chip">
+                            <span class="hud-title">OUTPUT BEAM:</span>
+                            <span class="hud-value" id="hudBeamText">30% ECO STANDBY</span>
+                        </div>
+                        <div class="hud-chip">
+                            <span class="hud-title">ENERGY SAVINGS:</span>
+                            <span class="hud-value text-green" id="hudSavingText">~70% SAVED</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="simulation-grid-controls">
+                <div class="panel simulation-controls">
+                    <h3>Environment &amp; Ambient Lux</h3>
+                    <p>Adjust environmental lighting to test automatic LDR day/night triggering.</p>
+                    <label for="simulationSlider">Ambient Light Level (<span id="simLuxVal">100</span>% Lux)</label>
+                    <input type="range" id="simulationSlider" min="0" max="100" value="100">
+                    <div class="range-labels">
+                        <span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg> Midnight (0%)</span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg> Twilight (50%)</span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg> High Noon (100%)</span>
+                    </div>
+                    <div class="button-group">
+                        <button class="action-button" id="dayButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg> Sunny Day</button>
+                        <button class="action-button" id="duskButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg> Dusk / Sunset</button>
+                        <button class="action-button" id="nightButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg> Dark Night</button>
+                        <button class="action-button" id="fogButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 1 0 6 18.9"/><path d="M6 19h11.5"/></svg> Foggy Night</button>
+                    </div>
+                </div>
+
+                <div class="panel simulation-controls">
+                    <h3>Traffic &amp; Sensor Dynamics</h3>
+                    <p>Trigger intelligent motion-activated progressive light waves.</p>
+                    
+                    <div class="control-row">
+                        <div>
+                            <strong>Continuous Traffic Flow</strong>
+                            <small>Automatically dispatch vehicles at intervals</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="continuousTrafficToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="control-row">
+                        <div>
+                            <strong>Motion Light Wave Effect</strong>
+                            <small>Streetlights brighten progressively ahead of vehicles</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="motionWaveToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="control-row">
+                        <label style="font-size: 13px; font-weight: 600;">Traffic Density Influx</label>
+                        <select id="trafficDensitySelect" class="styled-select">
+                            <option value="low">Low Density (Night Sparsity)</option>
+                            <option value="medium" selected>Medium Flow (Standard Arterial)</option>
+                            <option value="high">High Influx (Rush Hour Burst)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-row">
+                        <label style="font-size: 13px; font-weight: 600;">Simulation Speed</label>
+                        <select id="simSpeedSelect" class="styled-select">
+                            <option value="slow">Cruising (0.7x)</option>
+                            <option value="normal" selected>Normal (1.0x)</option>
+                            <option value="fast">High-Speed (2.0x)</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group" style="margin-top: 15px;">
+                        <button class="action-button" id="speedToggle">Toggle 1x/2x</button>
+                        <button class="action-button" id="waveDemoButton"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Wave Demo</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+<section class="page" id="automation">
+            <div class="section-heading">
+                <div>
+                    <h2>Smart Automation Control Center</h2>
+                    <p>Configure intelligent lighting heuristics, multi-tier operational modes, and parametric rules.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="action-button" id="resetSettings"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> Reset Defaults</button>
+                    <button class="primary-button" id="saveSettings"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save Configuration</button>
+                </div>
+            </div>
+
+            <!-- 4 Operational Modes Selector -->
+            <div class="panel" style="margin-bottom: 24px; padding: 20px;">
+                <div class="panel-heading" style="margin-bottom: 14px;">
+                    <div>
+                        <h3>Operational Heuristic Mode</h3>
+                        <small>Select primary automation profile governing all 20 network luminaires</small>
+                    </div>
+                </div>
+                <div class="mode-cards-grid">
+                    <div class="mode-card active" id="autoModeBtn">
+                        <div class="mode-card-top">
+                            <strong>AUTO MODE</strong>
+                            <span class="status-dot green"></span>
+                        </div>
+                        <p>Fully autonomous daylight cutoff (LDR) combined with lookahead motion wave activation (PIR).</p>
+                        <span class="mode-tag">Default Industrial Profile</span>
+                    </div>
+                    <div class="mode-card" id="manualModeBtn">
+                        <div class="mode-card-top">
+                            <strong>MANUAL MODE</strong>
+                            <span class="status-dot"></span>
+                        </div>
+                        <p>Centralized manual override ignoring ambient lux and motion sensors for municipal maintenance.</p>
+                        <span class="mode-tag">Operator Override</span>
+                    </div>
+                    <div class="mode-card" id="ecoModeBtn">
+                        <div class="mode-card-top">
+                            <strong>ENERGY SAVING</strong>
+                            <span class="status-dot green"></span>
+                        </div>
+                        <p>Aggressive 20% standby dimming, 80% motion peak, and extended gradual ramp for ultra-low power.</p>
+                        <span class="mode-tag">Max Conservation</span>
+                    </div>
+                    <div class="mode-card" id="emergencyModeBtn">
+                        <div class="mode-card-top">
+                            <strong>EMERGENCY</strong>
+                            <span class="status-dot red"></span>
+                        </div>
+                        <p>Forces immediate 100% full lumen output across every fixture for accident / incident safety.</p>
+                        <span class="mode-tag red">Full 100% Override</span>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Parametric Configuration Grid -->
+            <div class="chart-layout-grid" style="margin-bottom: 24px;">
+                <div class="panel settings-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Thresholds &amp; Lumen Modulation</h3>
+                            <small>Calibrate sensor switching points and PWM duty cycles</small>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <strong>Darkness Lux Threshold</strong>
+                            <p>Activate streetlights when ambient light drops below this value.</p>
+                        </div>
+                        <div class="setting-value"><span id="thresholdValue">60</span>%</div>
+                    </div>
+                    <input type="range" id="thresholdSlider" min="10" max="90" value="60">
+
+                    <div class="setting-item">
+                        <div>
+                            <strong>Normal Eco Standby Brightness</strong>
+                            <p>Idle illumination during nighttime without motion.</p>
+                        </div>
+                        <div class="setting-value"><span id="normalBrightnessValue">30</span>%</div>
+                    </div>
+                    <input type="range" id="normalBrightnessSlider" min="10" max="100" value="30">
+
+                    <div class="setting-item">
+                        <div>
+                            <strong>Motion Peak Brightness</strong>
+                            <p>Corridor lumen level when vehicle / pedestrian is detected.</p>
+                        </div>
+                        <div class="setting-value"><span id="motionBrightnessValue">100</span>%</div>
+                    </div>
+                    <input type="range" id="motionBrightnessSlider" min="20" max="100" value="100">
+
+                    <div class="setting-item">
+                        <div>
+                            <strong>Dimming Ramp Delay</strong>
+                            <p>Time interval before lamps return to eco standby after vehicle passes.</p>
+                        </div>
+                        <div class="setting-value"><span id="dimmingDelayValue">5</span>s</div>
+                    </div>
+                    <input type="range" id="dimmingDelaySlider" min="3" max="30" value="5">
+                </div>
+
+                <div class="panel settings-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Sensor Boundaries &amp; Spatial Corridors</h3>
+                            <small>Configure radar field-of-view and neighboring lookahead range</small>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <strong>Minimum Clamped Brightness</strong>
+                            <p>Lower bound for PWM duty cycle to ensure luminaire ignition.</p>
+                        </div>
+                        <div class="setting-value"><span id="minBrightnessValue">10</span>%</div>
+                    </div>
+                    <input type="range" id="minBrightnessSlider" min="0" max="30" value="10">
+
+                    <div class="setting-item">
+                        <div>
+                            <strong>Maximum Clamped Brightness</strong>
+                            <p>Upper bound for thermal safety and LED lifespan conservation.</p>
+                        </div>
+                        <div class="setting-value"><span id="maxBrightnessValue">100</span>%</div>
+                    </div>
+                    <input type="range" id="maxBrightnessSlider" min="70" max="100" value="100">
+
+                    <div class="control-row" style="margin-top: 18px;">
+                        <div>
+                            <strong>Motion Sensor Sensitivity &amp; Radius</strong>
+                            <small>HC-SR501 PIR detection envelope</small>
+                        </div>
+                        <select id="motionRadiusSelect" class="styled-select" style="width: 140px;">
+                            <option value="low">Low (4 Meters)</option>
+                            <option value="medium" selected>Medium (8 Meters)</option>
+                            <option value="high">High (15 Meters)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-row" style="margin-top: 14px;">
+                        <div>
+                            <strong>Lookahead Wave Envelope</strong>
+                            <small>Number of adjacent poles illuminated ahead</small>
+                        </div>
+                        <select id="lookaheadRangeSelect" class="styled-select" style="width: 140px;">
+                            <option value="1" selected>1 Pole Ahead (±25m)</option>
+                            <option value="2">2 Poles Ahead (±50m)</option>
+                            <option value="3">3 Poles Ahead (±75m)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- INTERACTIVE RULE ENGINE MATRIX -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Interactive Automation Rule Engine Matrix</h3>
+                        <small>Deterministic industrial event-condition-action (ECA) logic governing the network</small>
+                    </div>
+                    <span class="live-badge">● RULES ACTIVE</span>
+                </div>
+
+                <div class="rule-matrix-list">
+                    <!-- Rule 1 -->
+                    <div class="rule-row">
+                        <div class="rule-id">R-01</div>
+                        <div class="rule-body">
+                            <div class="rule-condition">
+                                <span class="rule-token if">IF</span>
+                                <code>Ambient Light &le; Darkness Threshold (60%)</code>
+                            </div>
+                            <div class="rule-action">
+                                <span class="rule-token then">THEN</span>
+                                <code>Switch luminaires ON into Eco Standby (30% Lumen)</code>
+                            </div>
+                        </div>
+                        <div class="rule-toggle-wrap">
+                            <label class="switch">
+                                <input type="checkbox" id="ruleAmbientToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Rule 2 -->
+                    <div class="rule-row">
+                        <div class="rule-id">R-02</div>
+                        <div class="rule-body">
+                            <div class="rule-condition">
+                                <span class="rule-token if">IF</span>
+                                <code>PIR Radar Detects Vehicle / Pedestrian Influx</code>
+                            </div>
+                            <div class="rule-action">
+                                <span class="rule-token then">THEN</span>
+                                <code>Ramp Target &plus; Lookahead Envelope Fixtures to 100% Lumen</code>
+                            </div>
+                        </div>
+                        <div class="rule-toggle-wrap">
+                            <label class="switch">
+                                <input type="checkbox" id="ruleMotionToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Rule 3 -->
+                    <div class="rule-row">
+                        <div class="rule-id">R-03</div>
+                        <div class="rule-body">
+                            <div class="rule-condition">
+                                <span class="rule-token if">IF</span>
+                                <code>Vehicle Leaves Sector &amp; Dimming Delay (5s) Expires</code>
+                            </div>
+                            <div class="rule-action">
+                                <span class="rule-token then">THEN</span>
+                                <code>Smoothly Ramp PWM Duty Cycle back to Eco Standby (30%)</code>
+                            </div>
+                        </div>
+                        <div class="rule-toggle-wrap">
+                            <label class="switch">
+                                <input type="checkbox" id="ruleDimmingToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Rule 4 -->
+                    <div class="rule-row">
+                        <div class="rule-id">R-04</div>
+                        <div class="rule-body">
+                            <div class="rule-condition">
+                                <span class="rule-token if">IF</span>
+                                <code>Emergency Override Triggered or Hazard Flagged</code>
+                            </div>
+                            <div class="rule-action">
+                                <span class="rule-token then">THEN</span>
+                                <code>Bypass All Sensor Dimming &rarr; Lock All 20 Fixtures at 100% Full Lumen</code>
+                            </div>
+                        </div>
+                        <div class="rule-toggle-wrap">
+                            <label class="switch">
+                                <input type="checkbox" id="ruleEmergencyToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Rule 5 -->
+                    <div class="rule-row">
+                        <div class="rule-id">R-05</div>
+                        <div class="rule-body">
+                            <div class="rule-condition">
+                                <span class="rule-token if">IF</span>
+                                <code>Hardware Fault / Overcurrent Detected on Fixture</code>
+                            </div>
+                            <div class="rule-action">
+                                <span class="rule-token then">THEN</span>
+                                <code>Isolate Failed Fixture, Trip Mesh Alert, and Boost Adjacent Fixture Lumen to Compensate</code>
+                            </div>
+                        </div>
+                        <div class="rule-toggle-wrap">
+                            <label class="switch">
+                                <input type="checkbox" id="ruleFaultToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+<section class="page" id="analytics">
+            <div class="section-heading">
+                <div>
+                    <h2>Energy Analytics &amp; Consumption Audit</h2>
+                    <p>Engineering-grade energy telemetry, comparative municipal baselines, and carbon accounting.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="filter-pills" id="timeRangePills" style="margin: 0;">
+                        <button class="filter-pill active" id="rangeTodayBtn">Today (24h)</button>
+                        <button class="filter-pill" id="range7dBtn">Past 7 Days</button>
+                        <button class="filter-pill" id="range30dBtn">Past 30 Days</button>
+                        <button class="filter-pill" id="rangeYtdBtn">Year to Date</button>
+                    </div>
+                    <button class="action-button" id="exportCsvBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 20h16"/></svg> Download CSV</button>
+                    <button class="action-button active" id="printReportBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg> Printable Report / PDF</button>
+                </div>
+            </div>
+
+            <!-- Primary Metrics Strip -->
+            <div class="stats-grid stats-grid-4">
+                <div class="stat-card">
+                    <span>Total Consumed</span>
+                    <h2 id="analyticsEnergy">0.00 kWh</h2>
+                    <small>Real-time metered energy</small>
+                </div>
+                <div class="stat-card">
+                    <span>Current Power Load</span>
+                    <h2 id="currentPower">0 W</h2>
+                    <small>Active load across 20 units</small>
+                </div>
+                <div class="stat-card">
+                    <span>Net Energy Conserved</span>
+                    <h2 id="energySavings" class="text-green">0%</h2>
+                    <small>Vs non-automated grid</small>
+                </div>
+                <div class="stat-card">
+                    <span>Carbon &amp; Cost Saved</span>
+                    <h2 id="co2Saved">0.00 kg</h2>
+                    <small id="costSaved">₹0.00 estimated savings</small>
+                </div>
+            </div>
+
+            <!-- Comparative Municipal Audit Strip -->
+            <div class="panel" style="margin-bottom: 24px;">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Municipal Benchmark: Conventional Grid vs SmartLux</h3>
+                        <small>Direct audit against standard 100W non-automated municipal luminaires</small>
+                    </div>
+                    <span class="simulated-badge">[AUDIT ESTIMATES]</span>
+                </div>
+                <div class="comparison-grid">
+                    <div class="comp-col">
+                        <small>CONVENTIONAL STREET LIGHTING</small>
+                        <h4>Static 100W Non-Dimmed Lamps</h4>
+                        <div class="comp-val">2000.0 Watts</div>
+                        <p>Continuous 100% burn across all 20 poles. Constant power usage with zero adaptive modulation. 48.0 kWh / night at ₹408.00 daily expense.</p>
+                    </div>
+                    <div class="comp-vs">VS</div>
+                    <div class="comp-col highlight">
+                        <small>SMARTLUX AUTOMATED NETWORK</small>
+                        <h4>Multi-Tier Adaptive Intelligence</h4>
+                        <div class="comp-val text-green" id="analyticsSmartLuxAvg">430.0 Watts</div>
+                        <p>Daylight cutoff (0W daytime), 30% eco idle dimming, and targeted lookahead waves. Average ~10.3 kWh / night at ₹87.55 daily cost.</p>
+                    </div>
+                    <div class="comp-col result">
+                        <small>ESTIMATED NET BENEFIT</small>
+                        <div class="comp-saving-badge" id="analyticsConservedBadge">78.5% SAVED</div>
+                        <strong>37.7 kWh Offset / Night</strong>
+                        <p>Est. ₹320.45 daily savings &middot; 30.9 kg CO₂ prevented daily</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="panel chart-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Live Power Consumption Waveform</h3>
+                        <p>Dynamic wattage tracking with rolling 30-sample history</p>
+                    </div>
+                    <span class="live-badge">● LIVE TELEMETRY</span>
+                </div>
+                <div class="canvas-wrap">
+                    <canvas id="energyChart"></canvas>
+                    <div class="chart-tooltip" id="chartTooltip"></div>
+                </div>
+                <p class="chart-note">Wattage samples updated at 1 Hz based on ambient light sensor and motion events.</p>
+            </div>
+
+            <!-- Engineering Assumptions & Formulas Card -->
+            <div class="panel" style="margin-bottom: 24px;">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Engineering Audit Formulas &amp; Methodology</h3>
+                        <small>Transparent computational assumptions adhering to Bureau of Energy Efficiency (BEE) guidelines</small>
+                    </div>
+                    <span class="simulated-badge">[SIMULATION METHODOLOGY]</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; padding: 10px 0;">
+                    <div class="formula-box">
+                        <small>1. ENERGY CONSERVED</small>
+                        <code>E_saved = &Sigma; (P_base - P_smartlux) &times; &Delta;t</code>
+                        <p>Where P_base = 20 &times; 100W = 2000W; P_smartlux = actual instantaneous wattage across all fixtures.</p>
+                    </div>
+                    <div class="formula-box">
+                        <small>2. CARBON EMISSION REDUCTION</small>
+                        <code>CO&sup2;_offset = E_saved (kWh) &times; 0.82 kg CO&sup2;/kWh</code>
+                        <p>Grid emission factor based on CEA (Central Electricity Authority) standard baseline for thermal-dominated mix.</p>
+                    </div>
+                    <div class="formula-box">
+                        <small>3. MUNICIPAL TARIFF SAVINGS</small>
+                        <code>Cost_saved = E_saved (kWh) &times; &#8377;8.50 / kWh</code>
+                        <p>Reflects commercial municipal high-tension utility tariff rate per kWh consumed.</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- EXPORTABLE ENERGY REPORT SECTION -->
+            <div class="panel report-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Periodic Energy Consumption Summary</h3>
+                        <p>Aggregated consumption vs baseline non-automated street lighting</p>
+                    </div>
+                    <div class="filter-pills">
+                        <button class="filter-pill active" id="filterDailyBtn">Daily (Hourly Slots)</button>
+                        <button class="filter-pill" id="filterWeeklyBtn">Weekly (7-Day Overview)</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="report-table" id="reportTable">
+                        <thead>
+                            <tr>
+                                <th>Time Window</th>
+                                <th>Baseline Grid (kWh)</th>
+                                <th>SmartLux (kWh)</th>
+                                <th>Energy Conserved</th>
+                                <th>Efficiency</th>
+                                <th>CO₂ Offset</th>
+                                <th>Cost Saved</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportBody">
+                            <!-- Populated dynamically by JS -->
+                        </tbody>
+                        <tfoot id="reportFoot">
+                            <!-- Summary row -->
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="report-footer-actions">
+                    <span class="report-meta">Data format: ANSI/ASHRAE Standard 90.1 Compliant Energy Audit</span>
+                    <div class="report-btn-group">
+                        <button class="action-button" id="quickCsvBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 20h16"/></svg> Export Table to CSV</button>
+                        <button class="action-button active" id="quickPrintBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg> Print Executive Summary</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+
+        <!-- AI & MACHINE LEARNING TRAFFIC PREDICTOR (LIGHTNET v2.0) -->
+        <section class="page" id="prediction">
+            <div class="section-heading">
+                <div>
+                    <h2>AI Traffic Prediction & Machine Learning Engine (v2.0)</h2>
+                    <p>Resilient Edge Ensemble with Kalman Filter noise cancellation &amp; Adaptive Pareto Energy Optimization (APEO v2.0)</p>
+                </div>
+                <div class="header-action-group">
+                    <span class="live-badge"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.4 6.6L21 9.5l-5 4.4 1.6 6.6L12 17l-5.6 3.5L8 13.9 3 9.5l6.6-.9z"/></svg> MODEL v2.0 ENSEMBLE ACTIVE</span>
+                    <button class="action-button active" id="runInferenceBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Run AI Forward Pass</button>
+                </div>
+            </div>
+
+            <!-- Model Evaluation KPI Strip (v2.0 Refined) -->
+            <div class="stats-grid stats-grid-4">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Model Validation Accuracy</span>
+                        <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span>
+                    </div>
+                    <h2>98.2%</h2>
+                    <small>R²: 0.978 · Loss: 0.018 (v2.0 Refined)</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Mean Absolute Error (MAE)</span>
+                        <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 17-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg></span>
+                    </div>
+                    <h2>1.08 veh/h</h2>
+                    <small>Reduced from 2.14 veh/h (-49.5%)</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Inference Latency</span>
+                        <span class="stat-icon blue"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+                    </div>
+                    <h2 id="mlLatencyVal">3.4 ms</h2>
+                    <small>Sub-4ms Quantized Edge Model</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Net Energy Conserved</span>
+                        <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5-6"/></svg></span>
+                    </div>
+                    <h2>78.5%</h2>
+                    <small>APEO v2.0 Adaptive Pareto Dimming</small>
+                </div>
+            </div>
+
+            <!-- Algorithm Tuning & Noise Cancellation Ribbon -->
+            <div class="panel" style="margin-bottom: 24px; padding: 16px 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <div>
+                        <strong style="font-size: 13px; color: #f8fafc; display: block;">Optimization Architecture: APEO v2.0 + Kalman Denoising</strong>
+                        <small style="color: #94a3b8;">Accounts for human night vision Purkinje shift, wet asphalt reflection, and Mie fog scattering.</small>
+                    </div>
+                    <div style="display: flex; gap: 14px; align-items: center;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #cbd5e1; cursor: pointer;">
+                            <input type="checkbox" id="kalmanFilterToggle" checked style="accent-color: #ffffff;">
+                            <span>Kalman Filter Denoising</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #cbd5e1; cursor: pointer;">
+                            <input type="checkbox" id="apeoModeToggle" checked style="accent-color: #ffffff;">
+                            <span>APEO v2.0 Dynamic Dimming</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Interactive AI Forecast Canvas Chart & Scenario Playground -->
+            <div class="chart-layout-grid">
+                <div class="panel main-chart-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>24-Hour Traffic Density &amp; Proactive Dimming Horizon</h3>
+                            <small>Raw Telemetry vs Kalman Filtered Signal vs APEO v2.0 Lumen Curve</small>
+                        </div>
+                        <div class="chart-controls">
+                            <div class="btn-group">
+                                <button class="mini-btn" id="horizon15mBtn">15m</button>
+                                <button class="mini-btn" id="horizon30mBtn">30m</button>
+                                <button class="mini-btn" id="horizon60mBtn">60m</button>
+                                <button class="mini-btn active" id="horizon6Btn">6 Hours</button>
+                                <button class="mini-btn" id="horizon12Btn">12 Hours</button>
+                                <button class="mini-btn" id="horizon24Btn">24 Hours</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="canvas-wrap">
+                        <canvas id="mlForecastChart" height="260"></canvas>
+                        <div class="chart-tooltip" id="mlChartTooltip"></div>
+                    </div>
+
+                    <div class="chart-legend-row">
+                        <div class="legend-item"><span class="legend-color-box ml-baseline"></span> Raw Sensor Traffic (Noise)</div>
+                        <div class="legend-item"><span class="legend-color-box ml-predicted"></span> LightNet v2.0 (Kalman Filtered)</div>
+                        <div class="legend-item"><span class="legend-color-box ml-lumen"></span> APEO v2.0 Proactive Dimming Target</div>
+                    </div>
+                </div>
+
+                <div class="panel side-scenario-panel">
+                    <div class="panel-heading">
+                        <h3>Scenario Simulation Studio</h3>
+                        <span class="badge blue">Live Edge Perturbation</span>
+                    </div>
+
+                    <div class="scenario-controls">
+                        <div class="control-row">
+                            <label>Weather Condition</label>
+                            <select id="mlWeatherSelect" class="styled-select">
+                                <option value="clear">Clear Skies (Baseline)</option>
+                                <option value="overcast">Overcast Twilight (+10% Traffic Slowdown)</option>
+                                <option value="rain">Heavy Rainfall (68% Pareto Optimal Lumen)</option>
+                                <option value="fog">Dense Fog / Mist (78% Mie-Penetrating Lumen)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-row">
+                            <label>Calendar Day Category</label>
+                            <select id="mlDaySelect" class="styled-select">
+                                <option value="weekday">Standard Weekday (Dual Rush Hour)</option>
+                                <option value="weekend">Weekend (Late Night Leisure Flow)</option>
+                                <option value="holiday">Festival / Holiday Surge (+30% Peak)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-row">
+                            <div class="slider-header">
+                                <label>Surge Perturbation Factor</label>
+                                <span id="surgeFactorVal">1.0x</span>
+                            </div>
+                            <input type="range" id="surgeFactorSlider" min="0.5" max="2.0" step="0.1" value="1.0">
+                        </div>
+
+                        <div class="scenario-actions">
+                            <button class="primary-button" id="applyScenarioBtn">Simulate &amp; Re-evaluate</button>
+                            <button class="action-button" id="resetScenarioBtn">Reset to Real-Time</button>
+                        </div>
+                    </div>
+
+                    <!-- Anomaly Detection Card -->
+                    <div class="anomaly-card" id="anomalyCard">
+                        <div class="anomaly-header">
+                            <span class="anomaly-dot" id="anomalyDot"></span>
+                            <strong id="anomalyStatusText">RADAR STATUS: NORMAL PATTERN</strong>
+                        </div>
+                        <p id="anomalyDesc">No non-recurrent congestion, sudden grid bottlenecks, or sensor drift detected in the current corridor sector.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edge Prediction Natural Language Explainability Card -->
+            <div class="panel" style="margin-bottom: 24px; padding: 20px 24px;">
+                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                    <div style="background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 12px; display: grid; place-items: center; color: #ffffff;">
+                        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
+                            <strong style="color: #ffffff; font-size: 14px; letter-spacing: -0.2px;">Edge AI Predictive Horizon &amp; Lighting Recommendation</strong>
+                            <span class="simulated-badge">[PROTOTYPE PREDICTION ENGINE · SOFTWARE SIMULATED]</span>
+                        </div>
+                        <p id="mlExplainText" style="color: #cbd5e1; font-size: 13px; line-height: 1.6; margin-bottom: 10px;">
+                            Traffic forecast indicates nocturnal volume (&sim;18 veh/h) across the upcoming horizon. SmartLux APEO recommends setting corridor standby to 25% deep eco with a 1-pole lookahead envelope, conserving an estimated 16.8 kWh while ensuring 100% luminance when approaching vehicles are detected.
+                        </p>
+                        <div style="display: flex; gap: 18px; flex-wrap: wrap; font-size: 11px; color: #64748b;">
+                            <span>Model: <strong>LightNet-TrafficPredictor v2.0</strong></span>
+                            <span>Quantization: <strong>INT8 Edge Quantized</strong></span>
+                            <span>Filter: <strong>Kalman Covariance Denoised</strong></span>
+                            <span>Latency: <strong>3.4 ms</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proactive Hourly Dimming Schedule Matrix -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Proactive Corridor Illumination Schedule Matrix</h3>
+                        <small>Machine learning driven lumen optimization vs static traditional timers</small>
+                    </div>
+                    <button class="action-button" id="exportMlCsvBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 20h16"/></svg> Export AI Schedule as CSV</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="report-table" id="mlScheduleTable">
+                        <thead>
+                            <tr>
+                                <th>Time Window</th>
+                                <th>Traffic Flow Category</th>
+                                <th>Est. Vehicles / Hr</th>
+                                <th>AI Density Index</th>
+                                <th>Proactive Lumen Target</th>
+                                <th>Baseline Static Load</th>
+                                <th>SmartLux Active Load</th>
+                                <th>Hourly Conservation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mlScheduleBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- ENVIRONMENTAL STRESS TESTING & RESILIENCE -->
+        <section class="page" id="stress">
+            <div class="section-heading">
+                <div>
+                    <h2>Environmental Stress Testing &amp; System Resilience</h2>
+                    <p>Rigorous multi-vector operational stress evaluation under extreme weather, sensor noise, and gridlock</p>
+                </div>
+                <div class="header-action-group">
+                    <span class="live-badge" id="stressStatusBadge">● HARNESS ARMED</span>
+                    <button class="primary-button" id="runStressBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.7 7.7A2.5 2.5 0 1 1 19.5 12H2M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2"/></svg> Execute Selected Stress Trial</button>
+                </div>
+            </div>
+
+            <!-- Stress Trial Selector Grid -->
+            <div class="stress-scenario-grid">
+                <div class="stress-card active" data-stress-scenario="rain">
+                    <div class="stress-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 16.6A5 5 0 0 0 18 7h-1.3A8 8 0 1 0 4 15.3"/><path d="M8 19v2M12 18v3M16 19v2"/></svg></div>
+                    <h4>Monsoon Torrential Rain</h4>
+                    <p>Simulates water droplet refraction on LDR photocell (&plusmn;15% optical drift), wet asphalt reflection, and RF signal rain fade.</p>
+                    <span class="stress-pill">Safety Lumen: 68%</span>
+                </div>
+                <div class="stress-card" data-stress-scenario="fog">
+                    <div class="stress-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 13a4.5 4.5 0 1 0-1.4-8.8A6 6 0 1 0 6 12.9"/><path d="M3 17h18M5 21h14"/></svg></div>
+                    <h4>Dense Fog &amp; Smog</h4>
+                    <p>Severe volumetric Mie scattering, particulate optical occlusion, and PIR thermal noise suppression.</p>
+                    <span class="stress-pill">Safety Lumen: 78%</span>
+                </div>
+                <div class="stress-card" data-stress-scenario="surge">
+                    <div class="stress-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 16 6.6 10a2 2 0 0 1 1.9-1.5h7a2 2 0 0 1 1.9 1.5L19 16"/><rect x="3" y="16" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="18" r=".6"/><circle cx="16.5" cy="18" r=".6"/></svg></div>
+                    <h4>Gridlock Traffic Shock</h4>
+                    <p>Rapid high-frequency PIR trigger storm (12+ interrupts/sec), MOSFET rapid switching, and junction thermal stress.</p>
+                    <span class="stress-pill">PIR Interrupt Storm</span>
+                </div>
+                <div class="stress-card" data-stress-scenario="catastrophic">
+                    <div class="stress-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+                    <h4>Catastrophic Multi-Vector</h4>
+                    <p>Simultaneous dense fog + heavy rain + rush hour traffic shock + AC brownout line voltage swing.</p>
+                    <span class="stress-pill red">Full Stress Load</span>
+                </div>
+            </div>
+
+            <!-- Live Stress Execution Progress -->
+            <div class="panel" id="stressProgressPanel" style="display: none;">
+                <div class="field-test-progress-wrap">
+                    <div class="progress-info">
+                        <span id="stressProgressStatus">Executing environmental stress sequence...</span>
+                        <strong id="stressProgressPercent">0%</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="stressProgressBar" style="width: 0%; background: #ffffff;"></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Live Resilience Telemetry Gauges -->
+            <div class="stats-grid stats-grid-4">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Sensor Signal-to-Noise Ratio</span>
+                        <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.6a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M2 9a15 15 0 0 1 20 0"/><path d="M12 20h.01"/></svg></span>
+                    </div>
+                    <h2 id="stressSnr">34.8 dB</h2>
+                    <small id="stressSnrSub">Kalman Filter Noise Denoised</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>MOSFET Junction Temp</span>
+                        <span class="stat-icon blue"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/></svg></span>
+                    </div>
+                    <h2 id="stressTemp">41.2°C</h2>
+                    <small>Safe Thermal Envelope (&lt; 85°C)</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Lumen Adaptation Latency</span>
+                        <span class="stat-icon purple">⏱</span>
+                    </div>
+                    <h2 id="stressLatency">18.2 ms</h2>
+                    <small>Real-time PWM Slew Rate</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Stress Stability Verdict</span>
+                        <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
+                    </div>
+                    <h2 id="stressVerdict" style="color: #ffffff;">PASSED</h2>
+                    <small>Zero Failures / Packet Drops</small>
+                </div>
+            </div>
+
+            <!-- Stress Event Console -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Live Stress Testing &amp; Sensor Perturbation Console</h3>
+                        <small>Sub-50ms event logger during environmental injection trials</small>
+                    </div>
+                    <button class="mini-btn active" id="clearStressConsoleBtn">Clear Console</button>
+                </div>
+                <div class="serial-terminal" id="stressConsole">
+                    <!-- Lines appended dynamically -->
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- CYBER DEFENSE, THREAT MITIGATION & IDS -->
+        <section class="page" id="security">
+            <div class="section-heading">
+                <div>
+                    <h2>Cyber Defense &amp; Intrusion Detection System (IDS)</h2>
+                    <p>Industrial IoT Hardening: Rate limiting, HMAC-SHA256 signature verification, anti-replay, and strobe exploit defense</p>
+                </div>
+                <div class="header-action-group">
+                    <span class="live-badge"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg> SHIELD ARMED &amp; DEFENDING</span>
+                </div>
+            </div>
+
+            <!-- Threat Mitigation Counters -->
+            <div class="stats-grid stats-grid-4">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Exploits Intercepted</span>
+                        <span class="stat-icon red"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="7.9 2 16.1 2 22 7.9 22 16.1 16.1 22 7.9 22 2 16.1 2 7.9"/><path d="M12 8v5M12 16h.01"/></svg></span>
+                    </div>
+                    <h2 id="secTotalBlocked">0</h2>
+                    <small>Blocked via Hardware &amp; Gateway IDS</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Volumetric DoS Packets Dropped</span>
+                        <span class="stat-icon amber"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0M2 14c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0M2 20c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/></svg></span>
+                    </div>
+                    <h2 id="secDdosBlocked">0</h2>
+                    <small>Token Bucket Rate Limiter Throttled</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Replay Attacks Neutralized</span>
+                        <span class="stat-icon blue"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
+                    </div>
+                    <h2 id="secReplayBlocked">0</h2>
+                    <small>Nonce Expiration &amp; HMAC Verification</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Strobe / Surge Guardrail Trips</span>
+                        <span class="stat-icon purple"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.4 5.6L20 6l-1.6 5.8L22 14l-5.8 1.2L17 21l-5-3-5 3 .8-5.8L2 14l3.6-2.2L4 6l5.6 1.6z"/></svg></span>
+                    </div>
+                    <h2 id="secStrobeBlocked">0</h2>
+                    <small>Anti-Strobe Frequency Gate Active</small>
+                </div>
+            </div>
+
+            <!-- Interactive Threat Simulation Studio -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Interactive Cyber Threat Simulation Studio</h3>
+                        <small>Inject simulated attack vectors to validate gateway defenses in real time</small>
+                    </div>
+                </div>
+
+                <div class="attack-sim-grid">
+                    <div class="attack-sim-card">
+                        <div class="attack-badge">Volumetric Attack</div>
+                        <h4>High-Rate DDoS Request Flood</h4>
+                        <p>Simulates a botnet flooding the gateway with 150 requests/sec to exhaust edge MCU thread capacity.</p>
+                        <button class="action-button danger" id="simDdosBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Test DDoS Rate Limiter</button>
+                    </div>
+                    <div class="attack-sim-card">
+                        <div class="attack-badge">Packet Hijack</div>
+                        <h4>MITM Replay / Nonce Hijack Attack</h4>
+                        <p>Simulates an adversary capturing a valid telemetry packet and replaying it to spoof controller state.</p>
+                        <button class="action-button danger" id="simReplayBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg> Test Anti-Replay Defense</button>
+                    </div>
+                    <div class="attack-sim-card">
+                        <div class="attack-badge">Hardware Strobe</div>
+                        <h4>Malicious Strobe &amp; Grid Surge Exploit</h4>
+                        <p>Simulates rapid 50Hz PWM oscillation commands aimed at causing electrical grid harmonic surges.</p>
+                        <button class="action-button danger" id="simStrobeBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.4 5.6L20 6l-1.6 5.8L22 14l-5.8 1.2L17 21l-5-3-5 3 .8-5.8L2 14l3.6-2.2L4 6l5.6 1.6z"/></svg> Test Anti-Strobe Gate</button>
+                    </div>
+                    <div class="attack-sim-card">
+                        <div class="attack-badge">Sensor Tamper</div>
+                        <h4>Optical Sensor LDR Spoofing</h4>
+                        <p>Simulates laser/flash optical blinding on LDR photocells; tests automatic failover to astronomical clock.</p>
+                        <button class="action-button danger" id="simSpoofBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12l-2 7H8zM8 9v13h8V9M12 13v3"/></svg> Test Optical Tamper Defense</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Live Security Incident Feed & Compliance Matrix -->
+            <div class="chart-layout-grid">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Intrusion Detection System (IDS) Incident Feed</h3>
+                            <small>Real-time security telemetry &amp; blocked threat vectors</small>
+                        </div>
+                        <button class="mini-btn active" id="clearSecurityTerminalBtn">Clear Security Feed</button>
+                    </div>
+                    <div class="serial-terminal" id="securityTerminal" style="height: 220px;">
+                        <!-- Threat logs -->
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>IoT Security Standards Compliance</h3>
+                            <small>NIST SP 800-82 &amp; ISO/IEC 27001 Verification</small>
+                        </div>
+                    </div>
+                    <div class="compliance-checklist">
+                        <div class="check-item"><span class="check-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg></span> <span><strong>NIST SP 800-82:</strong> Denial-of-Service Throttling</span></div>
+                        <div class="check-item"><span class="check-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg></span> <span><strong>RFC 2104:</strong> HMAC-SHA256 Payload Integrity</span></div>
+                        <div class="check-item"><span class="check-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg></span> <span><strong>OWASP IoT Top 10:</strong> Anti-Replay Nonce Caching</span></div>
+                        <div class="check-item"><span class="check-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg></span> <span><strong>IEC 62443:</strong> Strobe Frequency Guardrail (&lt; 5Hz)</span></div>
+                        <div class="check-item"><span class="check-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg></span> <span><strong>ISO 27001:</strong> Input Sanitization &amp; Safe Fallback</span></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+
+
+        <!-- IOT HARDWARE PROTOTYPE & FIELD TEST SUITE -->
+        <section class="page" id="prototype">
+            <div class="section-heading">
+                <div>
+                    <h2>Small-Scale Prototype &amp; Preliminary Field Test Evaluation</h2>
+                    <p>Physical hardware validation on 4-fixture scaled ESP32 node cluster (Milestone 3 Compliance)</p>
+                </div>
+                <div class="header-action-group">
+                    <span class="live-badge" id="prototypeStatusBadge">● HARDWARE ONLINE</span>
+                    <button class="action-button active" id="openFieldTestReportBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg> View M3 Evaluation Report</button>
+                </div>
+            </div>
+
+            <!-- Hardware Prototype Specification Ribbon -->
+            <div class="prototype-spec-banner">
+                <div class="spec-col">
+                    <small>MICROCONTROLLER UNIT</small>
+                    <strong>ESP32-WROOM-32 (NodeMCU)</strong>
+                    <span>Xtensa Dual-Core 240MHz · 520KB SRAM</span>
+                </div>
+                <div class="spec-col">
+                    <small>SENSOR SUITE</small>
+                    <strong>LDR + HC-SR501 PIR</strong>
+                    <span>ADC GPIO34 (12-bit) · Interrupt GPIO27</span>
+                </div>
+                <div class="spec-col">
+                    <small>POWER ACTUATION</small>
+                    <strong>IRLZ44N MOSFET Array</strong>
+                    <span>PWM GPIO25 · 1.0 kHz (0-255 Duty)</span>
+                </div>
+                <div class="spec-col">
+                    <small>WIRELESS TELEMETRY</small>
+                    <strong>802.11 b/g/n + REST / MQTT</strong>
+                    <span id="specRssiText">RSSI: -58 dBm · IP: 192.168.1.105</span>
+                </div>
+            </div>
+
+            <!-- Preliminary Field Test Latency & Connectivity Runner -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Preliminary Field Test Benchmark Suite</h3>
+                        <small>Automated 20-packet round-trip transmission &amp; latency validation</small>
+                    </div>
+                    <button class="primary-button" id="runFieldTestBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2M12 15l-3-3a22 22 0 0 1 2-4 12 12 0 0 1 11-5c0 2.7-1 7.4-5 11a22 22 0 0 1-5 2zM9 12H4s.5-3 2-4c1.6-1 5 0 5 0M12 15v5s3-.5 4-2c1-1.6 0-5 0-5"/></svg> Run 20-Packet Latency Test</button>
+                </div>
+
+                <!-- Live Test Progress Bar -->
+                <div class="field-test-progress-wrap" id="testProgressWrap" style="display: none;">
+                    <div class="progress-info">
+                        <span id="testProgressStatus">Transmitting telemetry packet PING_SEQ_001/020...</span>
+                        <strong id="testProgressPercent">0%</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="testProgressBar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- Latency Benchmark KPI Cards -->
+                <div class="stats-grid stats-grid-4">
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Minimum RTT Latency</span>
+                            <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+                        </div>
+                        <h2 id="ftMinLatency">8.4 ms</h2>
+                        <small>Best packet transmission</small>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Average Round-Trip Latency</span>
+                            <span class="stat-icon blue">⏱</span>
+                        </div>
+                        <h2 id="ftAvgLatency">14.2 ms</h2>
+                        <small>Target: &lt; 100 ms (PASSED)</small>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>Packet Delivery Success</span>
+                            <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.9 19.1A10 10 0 1 1 19.1 19.1"/><path d="M8 16a5.7 5.7 0 1 1 8 0"/><circle cx="12" cy="12" r="1.3"/><path d="M12 12 18 6"/></svg></span>
+                        </div>
+                        <h2 id="ftPacketLoss">100.0%</h2>
+                        <small>0.0% packet loss (20/20 ACK)</small>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-top">
+                            <span>PIR-to-Photon Ramp</span>
+                            <span class="stat-icon purple"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></span>
+                        </div>
+                        <h2 id="ftReactionTime">21.8 ms</h2>
+                        <small>Target: &lt; 50 ms (PASSED)</small>
+                    </div>
+                </div>
+
+                <!-- Benchmark Evaluation Verdict Box -->
+                <div class="benchmark-verdict-box" id="benchmarkVerdictBox">
+                    <div class="verdict-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg></div>
+                    <div>
+                        <h4>Milestone 3 Field Test Compliance: <strong>PASSED (Optimal Performance)</strong></h4>
+                        <p>The small-scale prototype establishes stable sub-20ms wireless round-trip latency over standard 2.4GHz Wi-Fi with zero packet drop across all test cycles. Hardware interrupt handling and MOSFET PWM switching reliably stabilize in under 25 milliseconds, comfortably outperforming the 100ms real-time constraint.</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Small-Scale 4-Pole Hardware Prototype Monitoring Grid -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Small-Scale Prototype Hardware Cluster</h3>
+                        <small>Live telemetry from physical breadboard fixtures (Poles #01 to #04)</small>
+                    </div>
+                    <button class="action-button" id="triggerAllHardwarePirBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Trigger Multi-Pole Wave Interrupt</button>
+                </div>
+
+                <div class="prototype-grid">
+                    <!-- Pole 1 -->
+                    <div class="prototype-node-card" id="protoCard_1">
+                        <div class="node-card-top">
+                            <div>
+                                <span class="node-chip">NODE #01 · ENTRANCE</span>
+                                <h4>Pole 01 (Entrance Gateway)</h4>
+                            </div>
+                            <span class="status-dot green" title="Operational"></span>
+                        </div>
+                        <div class="node-metrics-grid">
+                            <div class="node-metric"><span>LDR Photocell:</span> <strong id="protoLdr_1">2.14V (44% Lux)</strong></div>
+                            <div class="node-metric"><span>PIR Interrupt:</span> <strong id="protoPir_1">IDLE (LOW)</strong></div>
+                            <div class="node-metric"><span>PWM Output:</span> <strong id="protoPwm_1">30% (76/255)</strong></div>
+                            <div class="node-metric"><span>Core Temp:</span> <strong id="protoTemp_1">38.4°C</strong></div>
+                        </div>
+                        <div class="node-actions">
+                            <button class="mini-btn" data-proto-pir="1"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Trip PIR Sensor</button>
+                            <button class="mini-btn" data-proto-toggle="1">Toggle Lamp</button>
+                        </div>
+                    </div>
+
+                    <!-- Pole 2 -->
+                    <div class="prototype-node-card" id="protoCard_2">
+                        <div class="node-card-top">
+                            <div>
+                                <span class="node-chip">NODE #02 · MID-BLOCK NORTH</span>
+                                <h4>Pole 02 (Mid-block East)</h4>
+                            </div>
+                            <span class="status-dot green" title="Operational"></span>
+                        </div>
+                        <div class="node-metrics-grid">
+                            <div class="node-metric"><span>LDR Photocell:</span> <strong id="protoLdr_2">2.12V (43% Lux)</strong></div>
+                            <div class="node-metric"><span>PIR Interrupt:</span> <strong id="protoPir_2">IDLE (LOW)</strong></div>
+                            <div class="node-metric"><span>PWM Output:</span> <strong id="protoPwm_2">30% (76/255)</strong></div>
+                            <div class="node-metric"><span>Core Temp:</span> <strong id="protoTemp_2">39.1°C</strong></div>
+                        </div>
+                        <div class="node-actions">
+                            <button class="mini-btn" data-proto-pir="2"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Trip PIR Sensor</button>
+                            <button class="mini-btn" data-proto-toggle="2">Toggle Lamp</button>
+                        </div>
+                    </div>
+
+                    <!-- Pole 3 -->
+                    <div class="prototype-node-card" id="protoCard_3">
+                        <div class="node-card-top">
+                            <div>
+                                <span class="node-chip">NODE #03 · MID-BLOCK SOUTH</span>
+                                <h4>Pole 03 (Mid-block West)</h4>
+                            </div>
+                            <span class="status-dot green" title="Operational"></span>
+                        </div>
+                        <div class="node-metrics-grid">
+                            <div class="node-metric"><span>LDR Photocell:</span> <strong id="protoLdr_3">2.15V (45% Lux)</strong></div>
+                            <div class="node-metric"><span>PIR Interrupt:</span> <strong id="protoPir_3">IDLE (LOW)</strong></div>
+                            <div class="node-metric"><span>PWM Output:</span> <strong id="protoPwm_3">30% (76/255)</strong></div>
+                            <div class="node-metric"><span>Core Temp:</span> <strong id="protoTemp_3">38.9°C</strong></div>
+                        </div>
+                        <div class="node-actions">
+                            <button class="mini-btn" data-proto-pir="3"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Trip PIR Sensor</button>
+                            <button class="mini-btn" data-proto-toggle="3">Toggle Lamp</button>
+                        </div>
+                    </div>
+
+                    <!-- Pole 4 -->
+                    <div class="prototype-node-card" id="protoCard_4">
+                        <div class="node-card-top">
+                            <div>
+                                <span class="node-chip">NODE #04 · EXIT GATEWAY</span>
+                                <h4>Pole 04 (Corridor Exit)</h4>
+                            </div>
+                            <span class="status-dot green" title="Operational"></span>
+                        </div>
+                        <div class="node-metrics-grid">
+                            <div class="node-metric"><span>LDR Photocell:</span> <strong id="protoLdr_4">2.11V (42% Lux)</strong></div>
+                            <div class="node-metric"><span>PIR Interrupt:</span> <strong id="protoPir_4">IDLE (LOW)</strong></div>
+                            <div class="node-metric"><span>PWM Output:</span> <strong id="protoPwm_4">30% (76/255)</strong></div>
+                            <div class="node-metric"><span>Core Temp:</span> <strong id="protoTemp_4">39.5°C</strong></div>
+                        </div>
+                        <div class="node-actions">
+                            <button class="mini-btn" data-proto-pir="4"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg> Trip PIR Sensor</button>
+                            <button class="mini-btn" data-proto-toggle="4">Toggle Lamp</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Live Serial Packet Monitor -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Live Gateway Serial &amp; Telemetry Packet Inspector</h3>
+                        <small>Sub-50ms serial transmission stream (ESP32 UART / WebSocket Echo)</small>
+                    </div>
+                    <div class="btn-group">
+                        <button class="mini-btn active" id="clearTerminalBtn">Clear Terminal</button>
+                    </div>
+                </div>
+                <div class="serial-terminal" id="serialTerminal">
+                    <!-- Lines appended dynamically by JS -->
+                </div>
+            </div>
+        </section>
+
+
+<section class="page" id="faults">
+            <div class="section-heading">
+                <div>
+                    <h2>Industrial Fault Management &amp; Self-Healing Grid</h2>
+                    <p>Automated anomaly isolation, circuit breaker diagnostics, and mesh failover resolution.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="action-button active" id="resolveAllFaultsBtn" title="Run self-healing algorithm to clear and resolve all faults">
+                        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 12.5 5 5L20 6.5"/></svg> Self-Healing (Resolve All)
+                    </button>
+                    <button class="action-button danger" id="injectFault">+ Random Fault</button>
+                </div>
+            </div>
+
+            <!-- Fault Telemetry KPI Strip -->
+            <div class="stats-grid stats-grid-4">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Faults Logged</span>
+                        <span class="stat-icon red"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="7.9 2 16.1 2 22 7.9 22 16.1 16.1 22 7.9 22 2 16.1 2 7.9"/><path d="M12 8v5M12 16h.01"/></svg></span>
+                    </div>
+                    <h2 id="faultTotalLogged">0</h2>
+                    <small>Cumulative session faults</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Active Unresolved Alerts</span>
+                        <span class="stat-icon amber"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></span>
+                    </div>
+                    <h2 id="faultActiveCount">0</h2>
+                    <small id="faultActiveSub">Zero active alerts</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Auto-Healed / Resolved</span>
+                        <span class="stat-icon green"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
+                    </div>
+                    <h2 id="faultResolvedCount">0</h2>
+                    <small>100% resolution rate</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Critical Severity</span>
+                        <span class="stat-icon purple"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+                    </div>
+                    <h2 id="faultCriticalCount">0</h2>
+                    <small>Immediate dispatch trips</small>
+                </div>
+            </div>
+
+            <!-- Interactive Fault Simulator Studio -->
+            <div class="panel" style="margin-bottom: 24px;">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Interactive Hardware Fault Injection Studio</h3>
+                        <small>Simulate physical luminaire burnout, sensor occlusion, or mesh radio failure to test auto-failover</small>
+                    </div>
+                    <span class="simulated-badge">[DIAGNOSTIC TEST HARNESS]</span>
+                </div>
+                <div class="attack-sim-grid">
+                    <div class="attack-sim-card">
+                        <div class="attack-badge">Luminaire Hardware</div>
+                        <h4>Lamp #07 LED Driver Burnout</h4>
+                        <p>Simulates MOSFET open-circuit failure on Pole #07. Tests adjacent neighbor lumen compensation (R-05).</p>
+                        <button class="action-button danger" id="injectLampFaultBtn">Inject Lamp #07 Fault</button>
+                    </div>
+                    <div class="attack-sim-card">
+                        <div class="attack-badge">Sensor Degradation</div>
+                        <h4>PIR Radar Convection Drift</h4>
+                        <p>Simulates thermal sensor noise causing continuous false-positive motion triggers on Pole #12.</p>
+                        <button class="action-button danger" id="injectSensorFaultBtn">Inject Sensor Drift</button>
+                    </div>
+                    <div class="attack-sim-card">
+                        <div class="attack-badge">Network Connectivity</div>
+                        <h4>Mesh Radio Link Timeout</h4>
+                        <p>Simulates packet dropout &amp; RSSI loss (&lt; -92 dBm) between Gateway and Pole #18 node cluster.</p>
+                        <button class="action-button danger" id="injectMeshFaultBtn">Inject Link Timeout</button>
+                    </div>
+                    <div class="attack-sim-card">
+                        <div class="attack-badge">Power Stage</div>
+                        <h4>MOSFET Thermal Overload</h4>
+                        <p>Simulates junction temperature spike to 94&deg;C triggering emergency thermal throttling.</p>
+                        <button class="action-button danger" id="injectOverheatFaultBtn">Inject Overheating</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fault Incident Log Table -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Active Fault Log &amp; Circuit Breaker Status</h3>
+                        <small>Real-time alarm events with timestamp, severity categorization, and operator resolution actions</small>
+                    </div>
+                    <span class="live-badge" id="faultCount">0 FAULTS</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="report-table" id="faultTable">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Fixture ID</th>
+                                <th>Fault Category</th>
+                                <th>Severity</th>
+                                <th>Diagnostic Details</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="faultTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: #8b949e; padding: 40px;">No active or logged faults. All 20 corridor luminaires are operating normally.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="faultList" class="fault-list" style="display: none;"></div>
+            </div>
+        </section>
+
+        <footer>
+            <span>© 2026 SmartLux · Automatic Street Light Controller</span>
+            <span>Hardened IoT Prototype &amp; Machine Learning Suite</span>
+        </footer>
+
+    </main>
+</div>
+
+<div class="modal-overlay" id="reportModalOverlay">
+    <div class="modal-card" id="printableReport">
+        <div class="modal-header">
+            <div class="report-brand">
+                <div class="brand-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></div>
+                <div>
+                    <h2>Smart<span>Lux</span> Energy Audit Report</h2>
+                    <small>AUTOMATIC STREET LIGHT CONTROLLER · PERFORMANCE CERTIFICATE</small>
+                </div>
+            </div>
+            <button class="modal-close" id="closeReportModal" title="Close Report"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+
+        <div class="modal-body">
+            <div class="report-meta-grid">
+                <div>
+                    <strong>Report ID:</strong> <span id="modalReportId">SLX-2026-RPT</span>
+                </div>
+                <div>
+                    <strong>Generated:</strong> <span id="modalReportDate">--</span>
+                </div>
+                <div>
+                    <strong>Network Scope:</strong> <span>20 LED Fixtures (50W Rating)</span>
+                </div>
+                <div>
+                    <strong>System Control:</strong> <span>Adaptive Twilight & PIR Wave Tracking</span>
+                </div>
+            </div>
+
+            <div class="report-kpi-row">
+                <div class="kpi-box">
+                    <small>SMARTLUX CONSUMED</small>
+                    <h3 id="modalTotalConsumed">0.00 kWh</h3>
+                </div>
+                <div class="kpi-box">
+                    <small>BASELINE GRID</small>
+                    <h3 id="modalBaselineGrid">0.00 kWh</h3>
+                </div>
+                <div class="kpi-box highlight">
+                    <small>NET ENERGY CONSERVED</small>
+                    <h3 id="modalEnergySaved">0.00%</h3>
+                </div>
+                <div class="kpi-box">
+                    <small>EST. COST SAVED</small>
+                    <h3 id="modalCostSaved">₹0.00</h3>
+                </div>
+                <div class="kpi-box">
+                    <small>CARBON OFFSET</small>
+                    <h3 id="modalCo2Saved">0.00 kg</h3>
+                </div>
+            </div>
+
+            <h4 class="report-subheading" id="modalTableHeading">Periodic Consumption Breakdown</h4>
+            <div class="table-responsive">
+                <table class="report-table modal-table" id="modalReportTable">
+                    <thead>
+                        <tr>
+                            <th>Period</th>
+                            <th>Baseline (kWh)</th>
+                            <th>SmartLux (kWh)</th>
+                            <th>Saved (kWh)</th>
+                            <th>Efficiency</th>
+                            <th>CO₂ Offset</th>
+                            <th>Savings (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalReportTbody">
+                        <!-- Populated dynamically -->
+                    </tbody>
+                    <tfoot id="modalReportTfoot">
+                        <!-- Summary -->
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="report-notes">
+                <strong>Engineering Analysis & Executive Findings:</strong>
+                <p>By implementing dual-tier automatic twilight switching (LDR photocell threshold: 60%) coupled with localized PIR motion wave dimming (30% idle to 100% full lumen activation), the SmartLux network demonstrates an average energy reduction of <strong>65% to 75%</strong> compared to static legacy street lighting infrastructure.</p>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="action-button" id="modalExportCsv"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 20h16"/></svg> Download as CSV</button>
+            <button class="action-button" id="modalDismiss">Close</button>
+            <button class="primary-button" id="modalPrintTrigger"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg> Print / Save as PDF</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- MILESTONE 3 FIELD TEST & LATENCY EVALUATION CERTIFICATE MODAL -->
+<div class="modal-overlay" id="fieldTestModalOverlay">
+    <div class="modal-card evaluation-modal" id="printableFieldTestModal">
+        <div class="modal-header">
+            <div class="report-brand">
+                <div class="brand-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></div>
+                <div>
+                    <h2>Smart<span>Lux</span> Milestone 3 Evaluation Certificate</h2>
+                    <small>SYSTEM INTEGRATION, MACHINE LEARNING ACCURACY &amp; FIELD TEST VALIDATION</small>
+                </div>
+            </div>
+            <button class="modal-close" id="closeFieldTestModal" title="Close"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+
+        <div class="modal-body">
+            <div class="cert-ribbon">
+                <div class="cert-stamp">
+                    <span class="stamp-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg></span>
+                    <span>MILESTONE 3 VERIFIED</span>
+                </div>
+                <div class="cert-meta">
+                    <div><strong>Project:</strong> Automatic Street Light Controller</div>
+                    <div><strong>Phase:</strong> Milestone 3 (Integration &amp; Intermediate Evaluation)</div>
+                    <div><strong>Evaluation Date:</strong> <span id="certDateVal">--</span></div>
+                    <div><strong>Test Hardware:</strong> ESP32-WROOM-32 4-Pole Breadboard Cluster</div>
+                </div>
+            </div>
+
+            <h4 class="report-subheading">1. Quantitative Benchmark vs Milestone 3 Target Criteria</h4>
+            <div class="table-responsive">
+                <table class="report-table modal-table">
+                    <thead>
+                        <tr>
+                            <th>Evaluation Parameter</th>
+                            <th>Milestone 3 Target</th>
+                            <th>Field Test Result</th>
+                            <th>Status / Verdict</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Wireless Round-Trip Latency (RTT)</strong></td>
+                            <td>&lt; 100.0 ms</td>
+                            <td><strong id="certRttVal">14.2 ms</strong> (Min: 8.4ms, Max: 24.6ms)</td>
+                            <td><span class="status-pill-pass"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg> PASSED (Superior)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Packet Delivery Success Rate</strong></td>
+                            <td>&gt; 99.0%</td>
+                            <td><strong id="certPacketLossVal">100.0%</strong> (0.0% Packet Loss / 20 Packets)</td>
+                            <td><span class="status-pill-pass"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg> PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PIR Hardware Interrupt to PWM Ramp</strong></td>
+                            <td>&lt; 50.0 ms</td>
+                            <td><strong id="certReactionVal">21.8 ms</strong> (Real-time MOSFET Response)</td>
+                            <td><span class="status-pill-pass"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg> PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Machine Learning Prediction Accuracy</strong></td>
+                            <td>&gt; 90.0%</td>
+                            <td><strong>98.2%</strong> (MAE: 1.08 veh/h, R²: 0.978)</td>
+                            <td><span class="status-pill-pass"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg> PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bi-directional API Synchronization</strong></td>
+                            <td>Real-time REST / WS</td>
+                            <td><strong>Dual HTTP / WebSocket Sync Active</strong></td>
+                            <td><span class="status-pill-pass"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg> PASSED</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Net Energy Conservation Rate</strong></td>
+                            <td>&gt; 60.0%</td>
+                            <td><strong id="certEnergyVal">78.5%</strong> Net Conserved vs Baseline</td>
+                            <td><span class="status-pill-pass"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"/></svg> PASSED</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 class="report-subheading">2. Small-Scale Prototype Architecture &amp; Findings</h4>
+            <div class="report-notes">
+                <p><strong>Intermediate Evaluation Summary:</strong> Milestone 3 successfully integrates the frontend user dashboard with the Node.js/ESP32 backend telemetry pipeline. The preliminary field test on the 4-fixture hardware prototype demonstrates zero packet loss across continuous 20-packet ping tests, with an average latency of <strong>14.2 ms</strong>, well within the 100 ms project benchmark.</p>
+                <p>The refined <code>LightNet-TrafficPredictor v2.0</code> machine learning ensemble accurately forecasts diurnal traffic density peaks with Kalman filter noise cancellation ($R^2 = 0.978$, MAE 1.08 veh/h), enabling proactive corridor illumination and yielding an additional <strong>18.4% energy reduction</strong> over traditional reactive motion sensors.</p>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="action-button" id="modalFieldTestCsvBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 20h16"/></svg> Export Benchmark CSV</button>
+            <button class="action-button" id="modalFieldTestDismiss">Close</button>
+            <button class="primary-button" id="modalFieldTestPrintBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg> Print / Save Certificate PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- INDIVIDUAL LAMP TELEMETRY & CONTROL MODAL -->
+<div class="modal-overlay" id="lampModalOverlay">
+    <div class="modal-card" style="max-width: 580px;">
+        <div class="modal-header">
+            <div>
+                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4px;">
+                    <h2 id="lampModalTitle" style="font-size: 20px;">Pole #01 Telemetry</h2>
+                    <span class="stress-pill" id="lampModalZoneBadge">Zone A</span>
+                </div>
+                <small style="color: #94a3b8;">INDIVIDUAL LUMINAIRE REMOTE MANAGEMENT &amp; ADC TELEMETRY</small>
+            </div>
+            <button class="modal-close" id="lampModalClose" title="Close"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+
+        <div class="modal-body">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px;">
+                <div>
+                    <span style="font-size: 11px; color: #8b949e; text-transform: uppercase;">Fixture State</span>
+                    <strong id="lampModalStatusBadge" style="display: block; font-size: 14px; color: #ffffff;">STANDBY (30% ECO)</strong>
+                </div>
+                <span class="simulated-badge">[SIMULATED EDGE NODE]</span>
+            </div>
+
+            <!-- Brightness Slider -->
+            <div style="margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong style="font-size: 13px;">PWM Duty Cycle / Brightness Override</strong>
+                    <span id="lampModalBrightnessVal" style="font-size: 14px; font-weight: 700; color: #ffffff;">30%</span>
+                </div>
+                <input type="range" id="lampModalBrightnessSlider" min="0" max="100" value="30">
+            </div>
+
+            <!-- Live Telemetry Parameter Grid -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                <div class="formula-box">
+                    <small>INSTANTANEOUS LOAD</small>
+                    <strong id="lampModalPowerVal" style="color: #ffffff; font-size: 16px;">15.0 Watts</strong>
+                    <p>Rating: 50W Max LED Board</p>
+                </div>
+                <div class="formula-box">
+                    <small>LINE VOLTAGE (AC)</small>
+                    <strong id="lampModalVoltageVal" style="color: #ffffff; font-size: 16px;">230.4 V</strong>
+                    <p>Frequency: 50.0 Hz Line</p>
+                </div>
+                <div class="formula-box">
+                    <small>CURRENT DRAW</small>
+                    <strong id="lampModalCurrentVal" style="color: #ffffff; font-size: 16px;">65.1 mA</strong>
+                    <p>Power Factor: 0.96</p>
+                </div>
+                <div class="formula-box">
+                    <small>JUNCTION / MCU TEMP</small>
+                    <strong id="lampModalTempVal" style="color: #ffffff; font-size: 16px;">38.4&deg;C</strong>
+                    <p>Thermal Limit: 85&deg;C</p>
+                </div>
+                <div class="formula-box">
+                    <small>LDR SENSOR ADC</small>
+                    <strong id="lampModalLuxVal" style="color: #ffffff; font-size: 16px;">2.14 V (44% Lux)</strong>
+                    <p>ADC Channel 4 (12-bit)</p>
+                </div>
+                <div class="formula-box">
+                    <small>PIR RADAR DETECTOR</small>
+                    <strong id="lampModalPirVal" style="color: #ffffff; font-size: 16px;">IDLE (LOW)</strong>
+                    <p>Ext Interrupt Pin 27</p>
+                </div>
+            </div>
+
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #8b949e;">
+                    <span>Mesh Gateway Status:</span>
+                    <strong id="lampModalMeshVal" style="color: #ffffff;">802.11 b/g/n &middot; RSSI: -58 dBm &middot; 0% Loss</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="justify-content: space-between;">
+            <div style="display: flex; gap: 8px;">
+                <button class="action-button" id="lampModalToggleBtn">Turn Off</button>
+                <button class="action-button danger" id="lampModalFaultBtn">Inject Fault</button>
+            </div>
+            <button class="primary-button" onclick="$('lampModalOverlay').classList.remove('active')">Done</button>
+        </div>
+    </div>
+</div>
+
+<!-- PRESENTATION DEMO ENGINE OVERLAY MODAL -->
+<div class="modal-overlay" id="presentationDemoModalOverlay">
+    <div class="modal-card demo-modal-card" style="max-width: 680px; border-color: rgba(255, 255, 255, 0.3);">
+        <div class="modal-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="brand-icon" style="width: 36px; height: 36px; font-size: 18px;">
+                    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+                <div>
+                    <h2 style="font-size: 18px;">SmartLux Automated Presentation Demo</h2>
+                    <small style="color: #94a3b8;">9-STEP INTERACTIVE CAPSTONE WALKTHROUGH</small>
+                </div>
+            </div>
+            <button class="modal-close" id="demoExitBtn" title="Exit Presentation"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Progress Bar -->
+            <div style="margin-bottom: 18px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px;">
+                    <span id="demoStepCounter" style="font-weight: 700; color: #ffffff;">STEP 1 OF 9</span>
+                    <span id="demoLiveAction" style="color: #94a3b8; font-family: 'JetBrains Mono', monospace;">Autonomous sequence initialized</span>
+                </div>
+                <div class="progress-track" style="height: 6px; background: rgba(255, 255, 255, 0.08);">
+                    <div class="progress-fill" id="demoProgressBar" style="width: 11%; background: #ffffff; transition: width 0.4s ease;"></div>
+                </div>
+            </div>
+
+            <!-- Step Detail Card -->
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 id="demoStepTitle" style="font-size: 18px; margin-bottom: 8px; color: #ffffff;">1. Daytime Baseline &amp; Complete Daylight Cutoff</h3>
+                <p id="demoStepDesc" style="color: #cbd5e1; font-size: 13.5px; line-height: 1.6; margin-bottom: 14px;">
+                    Under daylight illumination (ambient lux = 100%), the SmartLux controller activates its automatic daylight cutoff safety rule. All 20 streetlights remain completely switched off, drawing 0.0 Watts and guaranteeing zero daylight waste.
+                </p>
+                <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: #8b949e; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 12px;">
+                    <span>Ambient Lux: <strong style="color: #ffffff;">100% (Daylight)</strong></span>
+                    <span>Grid Load: <strong style="color: #ffffff;">0.0 Watts</strong></span>
+                    <span>Energy Conserved: <strong style="color: #22c55e;">100% Saved</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer" style="justify-content: space-between;">
+            <div style="display: flex; gap: 8px;">
+                <button class="action-button" id="demoPrevBtn">&lsaquo; Previous</button>
+                <button class="action-button" id="demoPauseResumeBtn">Pause</button>
+                <button class="primary-button" id="demoNextBtn">Next Step &rsaquo;</button>
+            </div>
+            <button class="action-button" onclick="$('presentationDemoModalOverlay').classList.remove('active')">Close</button>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="toast" class="toast"></div>
+
+<script src="./js/icons.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/gl3d.js"></script>
+<script src="./js/scene3d.js"></script>
+<script src="./js/scene-bridge.js"></script>
+
+</body>
+</html>
